@@ -150,7 +150,7 @@ def getStudentProfile(request):
 Adds a list of skill tags to a given student.
 """
 @api_view(['POST'])
-def addTagToStudent(request):
+def addTagsToStudent(request):
     if request.method == 'POST':
         pid = request.data["pid"]
         try:
