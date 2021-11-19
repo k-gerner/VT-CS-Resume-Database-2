@@ -405,7 +405,10 @@ def generateSuggestedTags(file_path):
     with pdfplumber.open(file_path) as pdf:
         file_string_contents = ""
         for page in pdf.pages:
-            file_string_contents += page.extract_text()
+            try:
+                file_string_contents += page.extract_text()
+            except TypeError:
+                continue
     file_string_contents = file_string_contents.lower()
     punctuation = "[]\{\}()\\/\"'!@#$%^&*()-_+=.,?;:|~`"
     for punc in punctuation:

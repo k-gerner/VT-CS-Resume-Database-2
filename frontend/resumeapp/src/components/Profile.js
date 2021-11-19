@@ -1,6 +1,7 @@
 import StudentInfo from './StudentInfo';
 import Resume from './Resume';
 import './../main.css'
+import {Alert} from 'react-bootstrap';
 
 export default function Profile({currUser}) {
 
@@ -8,16 +9,21 @@ export default function Profile({currUser}) {
     return (
         <>
             {currUser !== null && currUser.type === "Student" ?
-                <div className="outer">
-                    <div className="inner">
+                <div className="outerProfile">
+                    <div className="profileDetails">
                         <StudentInfo currUser={currUser} />
                     </div>
-                    <div className="inner">
+                    <div className="resumeView">
                         <Resume currUser={currUser} />
                     </div>
                 </ div>
             :
-                <h1 className="h1Style">You must be logged in as a student to access this page</h1>
+            <Alert variant="danger">
+                <Alert.Heading>Something went wrong...</Alert.Heading>
+                <p>
+                You must be logged in as a student to access this page.
+                </p>
+            </Alert>
             }
         </>
     )

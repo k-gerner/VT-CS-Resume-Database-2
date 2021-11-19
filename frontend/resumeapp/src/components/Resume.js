@@ -3,6 +3,7 @@ import { Worker, Viewer, SpecialZoomLevel } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import {Toast} from 'react-bootstrap';
 import '../main.css'
 
 export default function Resume({currUser}) {
@@ -45,7 +46,16 @@ export default function Resume({currUser}) {
                             defaultScale={SpecialZoomLevel.ActualSize} />
                     </Worker>
                     :
-                    <h1 className="h1Style">You have not uploaded a resume yet</h1>
+                    <div className="d-flex justify-content-center flex-row" style={{marginTop:'40%'}}>
+                        <Toast>
+                            <Toast.Header>
+                                {/* <img src={require('./vt_logo.png')} className="rounded me-2" alt="VT logo" /> */}
+                                <strong className="me-auto">VT CS</strong>
+                                <small>{new Date().toLocaleString("en-US", { month: "long", day:"2-digit" })}</small>
+                            </Toast.Header>
+                            <Toast.Body>You have not yet uploaded a resume. It will appear here once you do.</Toast.Body>
+                        </Toast>
+                    </div>
                 :
                 <>
                 </>

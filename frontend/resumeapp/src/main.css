@@ -3,21 +3,28 @@
     border-color: #333
 }
 
-.outer {
+.outerProfile {
     width: 100%;
     padding: 10px;
     display: flex;
     align-items: flex-start;
   }
   
-.inner {
-    width: 50%;
+.profileDetails {
+    width: 40%;
+    flex: none;
+    padding-right: 1rem;
+}
+
+.resumeView {
+    width: 60%;
     flex: none;
     padding-right: 1rem;
 }
 
 .outerTags {
-    border: 1px solid black;
+    /* border: 3px solid black; */
+    border: 3px #e0e0e0;
     border-radius: 25px;
     width: 100%;
     padding: 10px;
@@ -69,4 +76,13 @@
     text-align: 'center';
     margin-top: 50;
     margin-bottom: 25;
+}
+
+
+/* For Resume.js toast pop up close button */
+/* (it wasn't styling correctly because our react and react-bootstrap versions are set up weirdly */
+.close{
+    /*background-color: red; */
+    visibility: hidden;
+    position: absolute;
 }

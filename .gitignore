@@ -9,3 +9,6 @@
 
 # ignore resume PDFs
 *.pdf
+
+# ignore pycache
+**/__pycache__

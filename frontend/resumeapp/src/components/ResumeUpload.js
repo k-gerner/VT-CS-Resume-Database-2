@@ -1,6 +1,6 @@
 import { FileUploader } from "react-drag-drop-files";
-import React, {useState} from 'react';
-import {Button} from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, Alert} from 'react-bootstrap';
 import './../main.css'
 import AddSkillTag from './AddSkillTag';
 
@@ -10,6 +10,7 @@ export default function ResumeUpload({currUser}) {
 	const [file, setFile] = useState(null);
 	const [suggestedTags, setSuggestedTags] = useState([]);
 	const [success, setSuccess] = useState(false);
+	const [alertText, setAlertText] = useState("orginial")//useState("Suggestions for skill tags that you have not already listed on your profile have been listed below. Click the '+' to add them!")
 	
 	const handleChange = file => {
 		setFile(file);
@@ -42,6 +43,17 @@ export default function ResumeUpload({currUser}) {
 		setFile(null)
 	}
 
+	useEffect(() => {
+		if(suggestedTags.length === 0){
+			console.log("# tags was 0")
+			setAlertText("No new skill tags were found in your resume.")
+		}
+		else{
+			console.log("# tags was MORE than 0")
+			setAlertText("Suggestions for skill tags that you have not already listed on your profile have been listed below. Click the '+' to add them!")
+		}
+	}, [suggestedTags])
+
 	// <---------------- STYLING ---------------->
 	let btnStyle = {
 	    marginRight: 10,
@@ -60,13 +72,18 @@ export default function ResumeUpload({currUser}) {
 	    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={upload_file_to_backend}>Submit</Button> 
 		<br/>
 		{ success &&
-			<h3>Succesfully uploaded resume</h3>
+			<Alert key="alert1" variant="success">
+				<Alert.Heading>Resume uploaded successfully!</Alert.Heading>
+				<p>
+					{alertText}
+			 	</p>
+			</Alert>
 		}
 		<br/>
 		{suggestedTags.length > 0 &&
-			<div className="outerTags">
+			<div key="outerTags" className="outerTags">
 				{ suggestedTags.map((tag) => 
-					<div className="innerTags"><AddSkillTag addCheck={true} currUser={currUser} skillTagName={tag} /></div>
+					<div key={tag} className="innerTags"><AddSkillTag addCheck={true} currUser={currUser} skillTagName={tag} /></div>
 				)
 				}
 			</div>

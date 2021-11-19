@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import StudentSkillTag from './StudentSkillTag';
-import {Button} from 'react-bootstrap';
+import {Button, ListGroup, Alert} from 'react-bootstrap';
 import '../main.css'
 
 export default function StudentInfo({currUser}) {
@@ -114,6 +114,8 @@ export default function StudentInfo({currUser}) {
             tempArr.push(tag.name)
         ))
         setStudentSkillTags(tempArr);
+        console.log("studentSkillTags ->" + studentSkillTags + "<-") 
+        console.log("studentSkillTags null? -> " + !studentSkillTags)
 
     }
 
@@ -131,22 +133,60 @@ export default function StudentInfo({currUser}) {
         <>
             {student !== null ?
                 <div>
-                    <h3 className="marStyleTop">Name: <span className="tabName">{student.first_name + " " + student.last_name}</span></h3>
-                    <h3 className="marStyle">PID: <span className="tabPID">{student.pid}</span></h3>
-                    <h3 className="marStyle">Email: <span className="tabEmailClass">{student.email}</span></h3>
-                    <h3 className="marStyle">Class: <span className="tabEmailClass">{capitalize(student.class_standing)}</span></h3>
-                    <br/>
-                    <div className="outerTags">
-                    {
-                        studentSkillTags !== null ?
-                        studentSkillTags.map((SkillTag) => (
-                            <div className="innerTags"><StudentSkillTag currUser={currUser} counter={counter} setCounter={setCounter} SkillTagName={SkillTag} studentSkillTags={studentSkillTags} setStudentSkillTags={setStudentSkillTags} /></div>
-                        ))
-                        :
-                        <>
-                        </>
-                    }
-                    </div>
+                    {/* https://react-bootstrap.github.io/components/list-group/ <-- we can look here for the editable class button implementation*/}
+                    <ListGroup as="ol">
+                        <ListGroup.Item
+                            as="li"
+                            className="d-flex justify-content-between align-items-start"
+                        >
+                            <div className="ms-2 me-auto">
+                            <div className="fw-bold">Name</div>
+                                {student.first_name + " " + student.last_name + " (" + student.pid + ")"}
+                            </div>
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            as="li"
+                            className="d-flex justify-content-between align-items-start"
+                        >
+                            <div className="ms-2 me-auto">
+                            <div className="fw-bold">Email</div>
+                                {student.email}
+                            </div>
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            as="li"
+                            className="d-flex justify-content-between align-items-start"
+                        >
+                            <div className="ms-2 me-auto">
+                            <div className="fw-bold">Class</div>
+                                {capitalize(student.class_standing)}
+                            </div>
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            as="li"
+                            className="d-flex justify-content-between align-items-start"
+                        >
+                            <div className="ms-2 me-auto">
+                            <div className="fw-bold">Skills</div>
+                                <div className="outerTags">
+                                {
+                                    studentSkillTags !== null ?
+                                        studentSkillTags.length === 0 ?
+                                            <Alert key='no_tags_alert' variant='secondary'>
+                                                You have no skill tags selected.
+                                            </Alert>
+                                            :
+                                            studentSkillTags.map((SkillTag) => (
+                                                <div className="innerTags"><StudentSkillTag currUser={currUser} counter={counter} setCounter={setCounter} SkillTagName={SkillTag} studentSkillTags={studentSkillTags} setStudentSkillTags={setStudentSkillTags} /></div>
+                                            ))
+                                        :
+                                        <>
+                                        </>
+                                }
+                                </div>
+                            </div>
+                        </ListGroup.Item>
+                    </ListGroup>
                     <br/>
                     <label>Select Skill Tags:</label>
                     <Select 
