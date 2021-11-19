@@ -46,7 +46,7 @@ export default function ResumeUpload({currUser}) {
 	let btnStyle = {
 	    marginRight: 10,
 	    backgroundColor: "#E95420",
-	    borderColor: "#E95420"
+	    borderColor: "#E95420",
 	}
 
   return (

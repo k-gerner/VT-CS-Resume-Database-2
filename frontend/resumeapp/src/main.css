@@ -47,4 +47,26 @@
     margin-top: 2rem;
     width: 30%;
     padding: 10px;
-  }
+}
+
+/*----------------*/
+/* StudentInfo.js */
+
+.marStyle {
+    margin-left: 30;
+}
+
+.marStyleTop {
+    margin-left: 30;
+    margin-top: 50;
+}
+
+/*------------*/
+/* Resume.js */
+/* Profile.js */
+
+.h1Style {
+    text-align: 'center';
+    margin-top: 50;
+    margin-bottom: 25;
+}

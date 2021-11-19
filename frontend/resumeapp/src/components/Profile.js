@@ -4,12 +4,6 @@ import './../main.css'
 
 export default function Profile({currUser}) {
 
-    // <---------------- STYLING ---------------->
-    let h1Style = {
-        textAlign: 'center',
-        marginTop: 50,
-        marginBottom: 25
-    }
 
     return (
         <>
@@ -23,7 +17,7 @@ export default function Profile({currUser}) {
                     </div>
                 </ div>
             :
-                <h1 style={h1Style}>You must be logged in as a student to access this page</h1>
+                <h1 className="h1Style">You must be logged in as a student to access this page</h1>
             }
         </>
     )

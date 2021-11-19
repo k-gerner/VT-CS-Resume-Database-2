@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import StudentSkillTag from './StudentSkillTag';
 import {Button} from 'react-bootstrap';
+import '../main.css'
 
 export default function StudentInfo({currUser}) {
     const [student, setStudent] = useState(null);
@@ -117,29 +118,23 @@ export default function StudentInfo({currUser}) {
     }
 
     // <---------------- STYLING ---------------->
+    
     let btnStyle = {
         marginRight: 10,
+        marginLeft: 10,
+        paddingLeft: 10,
         backgroundColor: "#E95420",
-        borderColor: "#E95420"
-    }
-
-    let marStyle = {
-        marginLeft: 30,
-    }
-
-    let marStyleTop = {
-        marginLeft: 30,
-        marginTop: 50,
+        borderColor: "#E95420",
     }
 
     return (
         <>
             {student !== null ?
                 <div>
-                    <h3 style={marStyleTop}>Name: <span className="tabName">{student.first_name + " " + student.last_name}</span></h3>
-                    <h3 style={marStyle}>PID: <span className="tabPID">{student.pid}</span></h3>
-                    <h3 style={marStyle}>Email: <span className="tabEmailClass">{student.email}</span></h3>
-                    <h3 style={marStyle}>Class: <span className="tabEmailClass">{capitalize(student.class_standing)}</span></h3>
+                    <h3 className="marStyleTop">Name: <span className="tabName">{student.first_name + " " + student.last_name}</span></h3>
+                    <h3 className="marStyle">PID: <span className="tabPID">{student.pid}</span></h3>
+                    <h3 className="marStyle">Email: <span className="tabEmailClass">{student.email}</span></h3>
+                    <h3 className="marStyle">Class: <span className="tabEmailClass">{capitalize(student.class_standing)}</span></h3>
                     <br/>
                     <div className="outerTags">
                     {

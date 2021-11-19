@@ -3,6 +3,7 @@ import { Worker, Viewer, SpecialZoomLevel } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import '../main.css'
 
 export default function Resume({currUser}) {
     const defaultLayout = defaultLayoutPlugin();
@@ -33,12 +34,6 @@ export default function Resume({currUser}) {
 
     }, [currUser])
 
-    // <---------------- STYLING ---------------->
-    let h1Style = {
-        textAlign: 'center',
-        marginTop: 50,
-        marginBottom: 25
-    }
 
     return (
         <>
@@ -50,7 +45,7 @@ export default function Resume({currUser}) {
                             defaultScale={SpecialZoomLevel.ActualSize} />
                     </Worker>
                     :
-                    <h1 style={h1Style}>You have not uploaded a resume yet</h1>
+                    <h1 className="h1Style">You have not uploaded a resume yet</h1>
                 :
                 <>
                 </>
