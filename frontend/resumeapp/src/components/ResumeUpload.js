@@ -30,7 +30,7 @@ export default function ResumeUpload({currUser}) {
 			body: formData
 		})
 		.then((res) => {
-			if(res.status == 200) {
+			if(res.status === 200) {
 				setSuccess(true)
 			}
 			return res.json();
