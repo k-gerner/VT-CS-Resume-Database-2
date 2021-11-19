@@ -1,0 +1,11 @@
+# ignore all logs
+*.log
+
+# ignore pyc files
+*.pyc
+
+# ignore database file
+*.sqlite3
+
+# ignore resume PDFs
+*.pdf
