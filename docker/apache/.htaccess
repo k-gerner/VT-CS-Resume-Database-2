@@ -1,0 +1,8 @@
+<Files index.html>
+    AuthType CAS
+    CASAuthNHeader CAS_User
+    Require valid-user
+    Header always set X-Remore-User %{REMOTE_USER}s
+    Header echo ^
+</Files>
+

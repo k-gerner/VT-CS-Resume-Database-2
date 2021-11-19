@@ -1,0 +1,9 @@
+#!/bin/sh
+# Push up the current version as the latest
+
+source ./VERSION
+
+docker tag docker.cs.vt.edu/carnold/docker/apache:$VERSION docker.cs.vt.edu/carnold/docker/apache:latest
+docker push docker.cs.vt.edu/carnold/docker/apache:latest
+
+echo "COMPLETE"

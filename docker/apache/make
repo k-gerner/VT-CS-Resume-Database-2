@@ -1,0 +1,13 @@
+#!/bin/sh
+
+source ./VERSION
+
+docker build -t docker.cs.vt.edu/carnold/docker/apache:$VERSION .
+if [ $? -ne 0 ]; then
+  echo " "
+  echo "ERROR: docker image failed"
+  exit
+fi
+docker push docker.cs.vt.edu/carnold/docker/apache:$VERSION
+
+echo "COMPLETE"

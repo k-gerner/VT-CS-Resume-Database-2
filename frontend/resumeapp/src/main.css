@@ -1,0 +1,50 @@
+.navLink:hover {
+    background-color: #333;
+    border-color: #333
+}
+
+.outer {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+.inner {
+    width: 50%;
+    flex: none;
+    padding-right: 1rem;
+}
+
+.outerTags {
+    border: 1px solid black;
+    border-radius: 25px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+}
+
+.tabName {
+    display: inline-block;
+    margin-left: 3rem;
+}
+
+.tabPID {
+    display: inline-block;
+    margin-left: 4.9rem;
+}
+
+.tabEmailClass {
+    display: inline-block;
+    margin-left: 3.4rem;
+}
+
+.center {
+    margin: auto;
+    margin-top: 2rem;
+    width: 30%;
+    padding: 10px;
+  }
