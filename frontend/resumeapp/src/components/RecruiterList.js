@@ -99,7 +99,7 @@ export default function RecruiterList({currUser}) {
                                 </Card.Body>
                             </Card>
                         </CardGroup>
-                    ))
+                        ))
                     } 
 
                     <Modal show={show} onHide={handleClose}>

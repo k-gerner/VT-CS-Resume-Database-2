@@ -240,6 +240,24 @@ def deleteRecruiter(request):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+"""
+Let's an admin delete a skill tag
+"""
+@api_view(['POST'])
+def adminDeleteTag(request):
+    if request.method == 'POST':
+        if request.data["type"] == "Administrator":
+            try:
+                tag = models.SkillTag.objects.get(name=request.data["deleteTag"])
+            except models.SkillTag.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            tag.delete()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 """
 Helper endpoint to make sure local storage user is still in db.
@@ -447,13 +465,9 @@ def search(request):
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
-
-
-
-'''
+"""
 Endpoint to upload file to path. Returns a json that contains the suggested skill tags (excluding ones already in use by student)
-'''
+"""
 @api_view(['POST'])
 def uploadResume(request):
     if request.method == 'POST':
@@ -532,6 +546,28 @@ def getCombinedSkillTagsList(names_list, tags_list):
                 return False, tag_name
     return True, tags_list
 
+
+"""
+Let's admin add a list of skill tags to db.
+"""
+@api_view(['POST'])
+def adminSkillTagAdd(request):
+    if request.method == 'POST':
+        skill_tags = request.data["tags"]
+        userType = request.data["type"]
+        if userType == "Administrator":
+            already_exist = []
+            for tag in skill_tags:
+                if models.SkillTag.objects.filter(name=tag).exists():
+                    already_exist.append(tag)
+                else:
+                    models.SkillTag.objects.create(name=tag)
+
+            return Response({"already_exist": already_exist}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED) 
+    else:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 """
 Updates a given student's class standing.

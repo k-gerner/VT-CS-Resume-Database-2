@@ -21,4 +21,6 @@ urlpatterns = [
     path('recruiter-exists/', views.recruiterExists, name="recruiter-exists"),
     path('cas-exists/', views.casExists, name="cas-exists"),
     path('update-student-class/', views.updateStudentClass, name="update-student-class"),
+    path('admin-add-tags/', views.adminSkillTagAdd, name="admin-add-tags"),
+    path('admin-delete-tag/', views.adminDeleteTag, name="admin-delete-tag"),
 ]
