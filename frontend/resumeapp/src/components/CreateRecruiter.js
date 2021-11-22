@@ -21,7 +21,8 @@ export default function CreateRecruiter({currUser}) {
         const newRecruiter = {
             "email": email,
             "password": password,
-            "company": company
+            "company": company,
+            "type": currUser.type,
         }
 
         const res = await fetch('http://localhost:8000/api/create-recruiter/', {
@@ -35,7 +36,7 @@ export default function CreateRecruiter({currUser}) {
             setIsValid(true);
         }
         else if (res.status === 400) {
-            setMessage("User " + email + " already exists");
+            setMessage("Recruiter " + email + " already exists");
             setIsValid(false);
         }
 

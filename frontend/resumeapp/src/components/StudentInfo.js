@@ -16,8 +16,6 @@ export default function StudentInfo({currUser}) {
         let isUnmount = false;
         const arr = currUser.username.split("@");
 
-        // console.log(studentSkillTags);
-
         fetch('http://localhost:8000/api/student-profile-data/', { 
             method: 'POST',
             headers: { "Content-Type": "application/json" },

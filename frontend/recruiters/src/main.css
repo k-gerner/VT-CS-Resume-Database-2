@@ -2,3 +2,22 @@
     background-color: #333;
     border-color: #333
 }
+
+.outerProfile {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+.profileDetails {
+    width: 40%;
+    flex: none;
+    padding-right: 1rem;
+}
+
+.resumeView {
+    width: 60%;
+    flex: none;
+    padding-right: 1rem;
+}
