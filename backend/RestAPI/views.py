@@ -27,13 +27,15 @@ def createRecruiter(request):
             email = request.data.get('email', None)
             password = request.data.get('password', None)
             company_name = request.data.get('company', None)
+            first_name = request.data.get('first', None)
+            last_name = request.data.get('last', None)
 
             if User.objects.filter(username=email).exists():
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
             else:
                 user = User.objects.create_user(username=email, password=password)
-                models.Recruiter.objects.create(user=user, company_name=company_name)
+                models.Recruiter.objects.create(user=user, company_name=company_name, first_name=first_name, last_name=last_name)
                 return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -261,20 +263,15 @@ Helper endpoint to make sure local storage CAS user is still in db.
 def casExists(request):
     if request.method == 'POST':
         username = request.data["username"]
-        if User.objects.filter(username=username).exists():
-            user = User.objects.get(username=username)
-            # return Response(status=status.HTTP_200_OK)
-            userType = request.data["type"]
-            if userType == "Student":
-                if models.Student.objects.filter(user=user).exists():
-                    return Response(status=status.HTTP_200_OK)
-                else:
-                    return Response(status=status.HTTP_403_FORBIDDEN)
-            elif userType == "Administrator":
-                if models.Administrator.objects.filter(user=user).exists():
-                    return Response(status=status.HTTP_200_OK)
-                else:
-                    return Response(status=status.HTTP_403_FORBIDDEN)
+        userType = request.data["type"]
+        if userType == "Student":
+            if models.Student.objects.filter(pid=username).exists():
+                return Response(status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_403_FORBIDDEN)
+        elif userType == "Administrator":
+            if models.Administrator.objects.filter(pid=username).exists():
+                return Response(status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_403_FORBIDDEN)
         else:

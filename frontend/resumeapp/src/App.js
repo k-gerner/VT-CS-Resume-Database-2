@@ -21,7 +21,7 @@ function App() {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            "username": JSON.parse(data).username,
+            "username": JSON.parse(data).username.split("@")[0],
             "type": JSON.parse(data).type})
       })
       .then((res) => {

@@ -8,20 +8,22 @@ export default function CreateRecruiter({currUser}) {
     const emailRef = useRef();
     const passRef = useRef();
     const companyRef = useRef();
+    const firstRef = useRef();
+    const lastRef = useRef();
 
     const create = async () => {
         const email = emailRef.current.value;
         const password = passRef.current.value;
         const company = companyRef.current.value;
-
-        // Do email / password validation here.
-        // (Set alert message).
-
+        const first = firstRef.current.value;
+        const last = lastRef.current.value;
 
         const newRecruiter = {
             "email": email,
             "password": password,
             "company": company,
+            "first": first,
+            "last": last,
             "type": currUser.type,
         }
 
@@ -40,6 +42,8 @@ export default function CreateRecruiter({currUser}) {
             setIsValid(false);
         }
 
+        firstRef.current.value = null;
+        lastRef.current.value = null;
         emailRef.current.value = null;
         passRef.current.value = null;
         companyRef.current.value = null;
@@ -79,6 +83,16 @@ export default function CreateRecruiter({currUser}) {
                         }
 
                         <Form>
+                            <div className="form-group">
+                                <FormLabel>First name</FormLabel>
+                                <input type="text" className="form-control" placeholder="Email" ref={firstRef}/>
+                            </div>
+                            <br/>
+                            <div className="form-group">
+                                <FormLabel>Last Name</FormLabel>
+                                <input type="text" className="form-control" placeholder="Email" ref={lastRef}/>
+                            </div>
+                            <br/>
                             <div className="form-group">
                                 <FormLabel>Email address</FormLabel>
                                 <input type="email" className="form-control" placeholder="Email" ref={emailRef}/>
