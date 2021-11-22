@@ -22,20 +22,24 @@ Enpoint for admins to create a new recruiter.
 """
 @api_view(['POST'])
 def createRecruiter(request):
-    # Need to check if request is made by an admin
-    # (can put some kind of credentials in request).
     if request.method == 'POST':
-        email = request.data.get('email', None)
-        password = request.data.get('password', None)
-        company_name = request.data.get('company', None)
+        if request.data["type"] == "Administrator":
+            email = request.data.get('email', None)
+            password = request.data.get('password', None)
+            company_name = request.data.get('company', None)
 
-        if User.objects.filter(username=email).exists():
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            if User.objects.filter(username=email).exists():
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
+            else:
+                user = User.objects.create_user(username=email, password=password)
+                models.Recruiter.objects.create(user=user, company_name=company_name)
+                return Response(status=status.HTTP_201_CREATED)
         else:
-            user = User.objects.create_user(username=email, password=password)
-            models.Recruiter.objects.create(user=user, company_name=company_name)
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            
+    else:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 """
 Endpoint for recruiters to login to the website.
@@ -106,7 +110,7 @@ def findAllStudents(request):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    return Response(status=status.HTTP_401_UNAUTHORIZED)
+    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 """
 Endpoint for recruiters to view a single student's profile.

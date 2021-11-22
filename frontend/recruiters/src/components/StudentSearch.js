@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import {Button, Card, CardGroup } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import {Alert} from 'react-bootstrap';
 
 export default function StudentSearch({match, currUser}) {
     const [students, setStudents] = useState([]);
+    const [classSearch, setClassSearch] = useState([]);
+    const [skillSearch, setSkillSearch] = useState([]);
 
     useEffect(() => {
         const skills = match.params.skills;
@@ -14,6 +17,9 @@ export default function StudentSearch({match, currUser}) {
 
         var classesArr = []
         classesArr = classes.split('-');
+
+        setClassSearch(classesArr)
+        setSkillSearch(skillArr)
 
         if (skills === null) {
             skillArr = null
@@ -127,7 +133,13 @@ export default function StudentSearch({match, currUser}) {
                     :
                     <>
                         <Button style={btnStyle} className="btn btn-primary mb-2" href="/find-students">Back to Search</Button>
-                        <h1 style={h1Style}> No students found </h1>
+                        <Alert variant="danger">
+                        <Alert.Heading>No students found with criteria</Alert.Heading>
+                            <p>
+                                Classes: {classSearch.join(" or ")} <br/>
+                                Skills: {skillSearch.join(", ")}
+                            </p>
+                        </Alert>
                     </>
                 }
                 </div>
