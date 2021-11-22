@@ -93,9 +93,9 @@ def casLogin(request):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 """
-Endpoint for recruiters to view all students.
+Endpoint for recruiters and admins to view all students.
 """
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def findAllStudents(request):
     if request.method == 'POST':
         if request.data["Type"] == "Recruiter" or request.data["Type"] == "Administrator":
@@ -105,15 +105,37 @@ def findAllStudents(request):
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
             studentSerializer = serializers.StudentSerializer(students, many=True)
-            return Response(studentSerializer.data)
+            return Response(studentSerializer.data, status=status.HTTP_200_OK)
             
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
 """
-Endpoint for recruiters to view a single student's profile.
+Endpoint for adminds to view all recruiters.
+"""
+@api_view(['POST'])
+def getAllRecruiters(request):
+    if request.method == 'POST':
+        if request.data["Type"] == "Administrator":
+            try:
+                recruiters = models.Recruiter.objects.all()
+            except models.Recruiter.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+            recruiterSerializer = serializers.RecruiterSerializer(recruiters, many=True)
+            return Response(recruiterSerializer.data, status=status.HTTP_200_OK)
+            
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+"""
+Endpoint for recruiters and admins to view a single student's profile.
 """
 @api_view(['POST'])
 def getSpecificStudent(request):
@@ -194,6 +216,25 @@ def deleteTagFromStudent(request):
         
         return Response({"success": "tags_added_successfully"}, status=status.HTTP_200_OK)
   
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+"""
+Let's an admin delete a recruiter account.
+"""
+@api_view(['POST'])
+def deleteRecruiter(request):
+    if request.method == 'POST':
+        if request.data["type"] == "Administrator":
+            try:
+                user = User.objects.get(username=request.data["recUsername"])
+            except User.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            user.delete()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
