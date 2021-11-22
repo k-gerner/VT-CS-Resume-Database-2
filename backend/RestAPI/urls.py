@@ -16,4 +16,6 @@ urlpatterns = [
     path('remove-tag-student/', views.deleteTagFromStudent, name="remove-tag-student"),
     path('upload-resume/', views.uploadResume, name='upload-resume'),
     path('add-single-tag-student/', views.addTagToStudent, name="add-single-tag-student"),
+    path('get-all-recruiters/', views.getAllRecruiters, name="get-all-recruiters"),
+    path('delete-recruiter/', views.deleteRecruiter, name="delete-recruiter"),
 ]
