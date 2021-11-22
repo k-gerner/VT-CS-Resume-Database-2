@@ -249,7 +249,11 @@ def recruiterExists(request):
     if request.method == 'POST':
         username = request.data["username"]
         if User.objects.filter(username=username).exists():
-            return Response(status=status.HTTP_200_OK)
+            user = User.objects.get(username=username)
+            if models.Recruiter.objects.filter(user=user).exists():
+                return Response(status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_403_FORBIDDEN)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
     else:

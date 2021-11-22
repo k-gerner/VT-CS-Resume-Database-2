@@ -42,13 +42,13 @@ export default function StudentDetail({ match, currUser }) {
             {currUser !== null && currUser.type === "Recruiter" && currStudent !== null ?
                 <>
                     <div className="outerProfile">
-                    <div className="profileDetails">
-                        <StudentInfo currStudent={currStudent} />
-                    </div>
-                    <div className="resumeView">
-                        <StudentResume currStudent={currStudent} />
-                    </div>
-                </ div>
+                        <div className="profileDetails">
+                            <StudentInfo currStudent={currStudent} />
+                        </div>
+                        <div className="resumeView">
+                            <StudentResume currStudent={currStudent} />
+                        </div>
+                    </ div>
                 </>
                 :
                 <Alert variant="danger">
