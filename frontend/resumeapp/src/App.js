@@ -9,6 +9,7 @@ import StudentDetail from './components/StudentDetail';
 import ResumeUpload from './components/ResumeUpload';
 import StudentList from './components/StudentList';
 import RecruiterList from './components/RecruiterList';
+import AllSkillTags from './components/AllSkillTags';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/upload-resume" exact component={() => <ResumeUpload currUser={currUser} /> } />
           <Route path="/view-all-students" exact component={() => <StudentList currUser={currUser} />} />
           <Route path="/view-all-recruiters" exact component={() => <RecruiterList currUser={currUser} />} />
+          <Route path="/all-skill-tags" exact component={() => <AllSkillTags currUser={currUser} />} />
           <Route path="/student/:pid" exact component = {(props) => <StudentDetail currUser={currUser} {...props} />} />
         </Switch>
       </Router>
