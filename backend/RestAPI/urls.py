@@ -18,4 +18,6 @@ urlpatterns = [
     path('add-single-tag-student/', views.addTagToStudent, name="add-single-tag-student"),
     path('get-all-recruiters/', views.getAllRecruiters, name="get-all-recruiters"),
     path('delete-recruiter/', views.deleteRecruiter, name="delete-recruiter"),
+    path('recruiter-exists/', views.recruiterExists, name="recruiter-exists"),
+    path('cas-exists/', views.casExists, name="cas-exists"),
 ]

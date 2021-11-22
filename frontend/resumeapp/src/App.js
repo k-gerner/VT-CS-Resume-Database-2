@@ -17,7 +17,18 @@ function App() {
   useEffect(() => {
     const data = localStorage.getItem('currUser');
     if(data) {
-      setCurrUser(JSON.parse(data));
+      fetch('http://localhost:8000/api/cas-exists/', { 
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            "username": JSON.parse(data).username.split("@")[0],
+            "type": JSON.parse(data).type})
+      })
+      .then((res) => {
+          if(res.status === 200) {
+              setCurrUser(JSON.parse(data));
+          }
+      })
     }
   }, [])
 

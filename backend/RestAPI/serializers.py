@@ -27,4 +27,4 @@ class RecruiterSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     class Meta:
         model = models.Recruiter
-        fields = ['user', 'company_name']
+        fields = ['user', 'company_name', 'first_name', 'last_name']

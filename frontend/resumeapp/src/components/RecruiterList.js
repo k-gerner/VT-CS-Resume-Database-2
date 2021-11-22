@@ -91,8 +91,9 @@ export default function RecruiterList({currUser}) {
                                 text="dark"
                                 style={{ width: "18rem" }}
                                 className="mb-2">
+                                <Card.Header style={{textAlign: 'center'}}>{rec.user.username}</Card.Header>
                                 <Card.Body style={{textAlign: 'center'}}>
-                                    <Card.Title>{rec.user.username}</Card.Title>
+                                    <Card.Title>{rec.first_name + " " + rec.last_name}</Card.Title>
                                     <Card.Text>{rec.company_name}</Card.Text>
                                     <Button variant="danger" onClick={() => openDeleteBox(rec.user.username)}>Delete</Button>
                                 </Card.Body>

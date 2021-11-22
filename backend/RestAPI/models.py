@@ -49,6 +49,8 @@ class Student(models.Model):
 class Recruiter(models.Model):
     # id field is automatically incremented.
     user = models.OneToOneField(User, on_delete=models.CASCADE) # Using django inbuilt user since not using CAS.
+    first_name = models.CharField(max_length=255, default="John")
+    last_name = models.CharField(max_length=255, default="Doe")
     company_name = models.CharField(max_length=255)
 
     def __str__(self):
