@@ -240,6 +240,50 @@ def deleteRecruiter(request):
 
 
 """
+Helper endpoint to make sure local storage user is still in db.
+"""
+@api_view(['POST'])
+def recruiterExists(request):
+    if request.method == 'POST':
+        username = request.data["username"]
+        if User.objects.filter(username=username).exists():
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+"""
+Helper endpoint to make sure local storage CAS user is still in db.
+"""
+@api_view(['POST'])
+def casExists(request):
+    if request.method == 'POST':
+        username = request.data["username"]
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
+            # return Response(status=status.HTTP_200_OK)
+            userType = request.data["type"]
+            if userType == "Student":
+                if models.Student.objects.filter(user=user).exists():
+                    return Response(status=status.HTTP_200_OK)
+                else:
+                    return Response(status=status.HTTP_403_FORBIDDEN)
+            elif userType == "Administrator":
+                if models.Administrator.objects.filter(user=user).exists():
+                    return Response(status=status.HTTP_200_OK)
+                else:
+                    return Response(status=status.HTTP_403_FORBIDDEN)
+            else:
+                return Response(status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+"""
 Adds just one tag to a student.
 """
 @api_view(['POST'])
@@ -486,35 +530,3 @@ def getCombinedSkillTagsList(names_list, tags_list):
             except models.SkillTag.DoesNotExist:
                 return False, tag_name
     return True, tags_list
-
-
-# """
-# Endpoint to add skill tags to student
-# """
-# @api_view(['POST'])
-# def addStudentSkillTags(request):
-#     if request.method == 'POST':
-#         # TODO: Have some sort of authentication here to make sure the request is valid (e.g. make sure someone didn't just edit the request to change someone else's skill tags)
-#         pid = request.data.get('StudentPID', None)
-#         try:
-#             student = models.Student.objects.get(pid=pid) # do we get students this way?
-#         except models.Student.DoesNotExist:
-#             error_json = {
-#                 "invalid_user_id":pid
-#             }
-#             return Response(error_json, status=status.HTTP_404_NOT_FOUND)
-
-#         new_tag_names = request.data.get('tags', []) # list of strings
-#         student_tag_list = getattr(student, skill_tags) # list of SkillTag objects
-#         success, updated_tag_list = getCombinedSkillTagsList(new_tag_names, student_tag_list)
-#         if success:
-#             student.update(skill_tags = updated_tag_list)
-#             return_json = {
-#                 "updated_tag_names" : [tag.name for tag in updated_tag_list]
-#             }
-#             return Response(return_json, status=status.HTTP_200_OK)
-#         else:
-#             error_json = {
-#                 "invalid_tag":updated_tag_list # note this is actually a single string in this case
-#             }
-#             return Response(error_json, status=status.HTTP_404_NOT_FOUND)
