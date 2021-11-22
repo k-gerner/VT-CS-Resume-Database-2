@@ -98,7 +98,7 @@ Endpoint for recruiters to view all students.
 @api_view(['GET', 'POST'])
 def findAllStudents(request):
     if request.method == 'POST':
-        if request.data["Type"] == "Recruiter":
+        if request.data["Type"] == "Recruiter" or request.data["Type"] == "Administrator":
             try:
                 students = models.Student.objects.all().order_by('first_name')
             except models.Student.DoesNotExist:
@@ -118,7 +118,7 @@ Endpoint for recruiters to view a single student's profile.
 @api_view(['POST'])
 def getSpecificStudent(request):
     if request.method == 'POST':
-        if request.data["Type"] == "Recruiter":
+        if request.data["Type"] == "Recruiter" or request.data["Type"] == "Administrator":
             try:
                 student = models.Student.objects.get(pid=request.data["StudentPID"])
             except models.Student.DoesNotExist:

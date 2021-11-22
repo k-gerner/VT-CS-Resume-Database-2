@@ -20,7 +20,6 @@ export default function Navigation ({currUser}) {
     <Navbar style={navbarStyle} expand="lg">
     <Container>
       <Navbar.Brand style={textStyle}>VT CS Resume Database</Navbar.Brand>
-      {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
           {currUser === null ?
@@ -34,6 +33,7 @@ export default function Navigation ({currUser}) {
               </>
             :
               <>
+              <Nav.Link className="navLink" href="/view-all-students" style={textStyle}>View All Students</Nav.Link>
               <Nav.Link className="navLink" href="/create-recruiter" style={textStyle}>Create Recruiter</Nav.Link>
               <Nav.Link className="navLink" href="/" style={textStyle}>Logout</Nav.Link>
               </>
