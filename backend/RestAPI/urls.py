@@ -20,4 +20,5 @@ urlpatterns = [
     path('delete-recruiter/', views.deleteRecruiter, name="delete-recruiter"),
     path('recruiter-exists/', views.recruiterExists, name="recruiter-exists"),
     path('cas-exists/', views.casExists, name="cas-exists"),
+    path('update-student-class/', views.updateStudentClass, name="update-student-class"),
 ]

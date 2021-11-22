@@ -10,6 +10,15 @@ export default function StudentInfo({currUser}) {
     const [selectedSkills, setSelectedSkills] = useState(null);
     const [skillOptions, setSkillOptions] = useState(null);
 
+    const classOptions = [
+        {value: 'Freshman', label: 'Freshman'},
+        {value: 'Sophomore', label: 'Sophomore'},
+        {value: 'Junior', label: 'Junior'},
+        {value: 'Senior', label: 'Senior'},
+        {value: 'Master\'s', label: 'Master\'s'},
+        {value: 'PhD', label: 'PhD'}
+    ]
+
     const [counter, setCounter] = useState(0);
 
     useEffect(() => {
@@ -67,6 +76,20 @@ export default function StudentInfo({currUser}) {
         
     }
 
+    const classSelect = async (selectedClass) => {
+        // console.log(selectedClass);
+        const changePackage = {
+            "pid": student.pid,
+            "class": selectedClass.value,
+        }
+
+        await fetch('http://localhost:8000/api/update-student-class/', { 
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(changePackage)
+        })
+    }
+
     const clearFilters = () => {
         setSelectedSkills(null);
     }
@@ -112,8 +135,6 @@ export default function StudentInfo({currUser}) {
             tempArr.push(tag.name)
         ))
         setStudentSkillTags(tempArr);
-        console.log("studentSkillTags ->" + studentSkillTags + "<-") 
-        console.log("studentSkillTags null? -> " + !studentSkillTags)
 
     }
 
@@ -157,7 +178,12 @@ export default function StudentInfo({currUser}) {
                         >
                             <div className="ms-2 me-auto">
                             <div className="fw-bold">Class</div>
-                                {capitalize(student.class_standing)}
+                                <Select 
+                                    defaultValue={{value: capitalize(student.class_standing), label: capitalize(student.class_standing)}}
+                                    onChange={classSelect}
+                                    options={classOptions}
+                                    isSearchable={true}
+                                />
                             </div>
                         </ListGroup.Item>
                         <ListGroup.Item

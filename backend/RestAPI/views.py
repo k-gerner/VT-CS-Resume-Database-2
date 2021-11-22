@@ -531,3 +531,25 @@ def getCombinedSkillTagsList(names_list, tags_list):
             except models.SkillTag.DoesNotExist:
                 return False, tag_name
     return True, tags_list
+
+
+"""
+Updates a given student's class standing.
+"""
+@api_view(['POST'])
+def updateStudentClass(request):
+    if request.method == 'POST':
+        pid = request.data["pid"]
+        new_class = request.data["class"].upper()
+        try:
+            student = models.Student.objects.get(pid=pid)
+        except models.Student.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        # print('{} {}'.format(pid, new_class))
+        student.class_standing = new_class
+        student.save()
+        return Response(status=status.HTTP_200_OK)
+
+    else:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
