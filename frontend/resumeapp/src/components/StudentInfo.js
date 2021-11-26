@@ -221,8 +221,8 @@ export default function StudentInfo({currUser}) {
                         isSearchable={true}
                     />
                     <br/>
-                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={addTags}>Add Skills</Button> 
-                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={clearFilters}>Clear</Button>
+                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={addTags} disabled={selectedSkills===null}>Add Skills</Button> 
+                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={clearFilters} disabled={selectedSkills===null}>Clear</Button>
                 </div>
                 :
                 <>

@@ -69,7 +69,7 @@ export default function ResumeUpload({currUser}) {
 	        types={fileTypes} 
 	    />
 		<br/>
-	    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={upload_file_to_backend}>Submit</Button> 
+	    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={upload_file_to_backend} disabled={file===null}>Submit</Button> 
 		<br/>
 		{ success &&
 			<Alert key="alert1" variant="success">
