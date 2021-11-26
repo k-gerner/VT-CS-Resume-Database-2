@@ -143,8 +143,13 @@ export default function StudentList ({currUser}) {
         borderColor: "#E95420"
     }
 
+    let paddingStyle = {
+        paddingLeft:"1%",
+        paddingRight:"1%"
+    }
+
     return (
-        <>
+        <div style={paddingStyle}>
             {currUser !== null && currUser.type === "Recruiter"?
                 <div>
                     <br/>
@@ -171,13 +176,13 @@ export default function StudentList ({currUser}) {
 
                     <br/>
 
-                    <Button style={btnStyle} className="btn btn-primary mb-2">
+                    <Button style={btnStyle} className="btn btn-primary mb-2" disabled={selectedSkills === null && selectedClasses === null}>
                         <Link to={`/student-search/${formatSkillSearchPackage()}/${formatClassSearchPackage()}`}
                             style={{ textDecoration: 'none', color: 'white'}}>
                             Search
                         </Link>
                     </Button> 
-                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={clearFilters}>Clear</Button>
+                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={clearFilters} disabled={selectedSkills === null && selectedClasses === null}>Clear</Button>
 
                     <br/>
 
@@ -209,6 +214,6 @@ export default function StudentList ({currUser}) {
                     <h1 style={h1Style}>You do not have access to this page</h1>
                 </>
             }
-        </>
+        </div>
     );
 }

@@ -91,11 +91,15 @@ export default function StudentSearch({match, currUser}) {
     }
 
     let btnStyle = {
-        marginRight: 10,
         backgroundColor: "#E95420",
         borderColor: "#E95420",
-        marginTop: 10,
-        marginLeft: 10
+        marginLeft:"1%",
+        marginTop:"1%"
+    }
+
+    let paddingStyle = {
+        paddingLeft:"1%",
+        paddingRight:"1%"
     }
 
     return (
@@ -105,30 +109,32 @@ export default function StudentSearch({match, currUser}) {
                     {students.length > 0 ? 
                     <>
                         <Button style={btnStyle} className="btn btn-primary mb-2" href="/find-students">Back to Search</Button>
-                        <h1 style={h1Style}>Search Results</h1>
+                        <div style={paddingStyle}>
+                            <h1 style={h1Style}>Search Results</h1>
 
-                        {students.map((stud, idx) => (
-                            <CardGroup>
-                                <Card
-                                    bg="light"
-                                    key={idx}
-                                    text="dark"
-                                    style={{ width: "18rem" }}
-                                    className="mb-2">
-                                    
-                                    <Card.Header style={{textAlign: 'center'}}>{stud.pid}</Card.Header>
-                                    <Card.Body style={{textAlign: 'center'}}>
-                                        <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
-                                        <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
-                                    </Card.Body>
-                                    <Card.Footer style={{textAlign: 'center'}}>
-                                        {skillTagConvert(stud.skill_tags).join(", ")}
-                                    </Card.Footer>
-                                </Card>
+                            {students.map((stud, idx) => (
+                                <CardGroup>
+                                    <Card
+                                        bg="light"
+                                        key={idx}
+                                        text="dark"
+                                        style={{ width: "18rem" }}
+                                        className="mb-2">
+                                        
+                                        <Card.Header style={{textAlign: 'center'}}>{stud.pid}</Card.Header>
+                                        <Card.Body style={{textAlign: 'center'}}>
+                                            <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
+                                            <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
+                                        </Card.Body>
+                                        <Card.Footer style={{textAlign: 'center'}}>
+                                            {skillTagConvert(stud.skill_tags).join(", ")}
+                                        </Card.Footer>
+                                    </Card>
 
-                            </CardGroup>
-                        ))
-                    } 
+                                </CardGroup>
+                            ))
+                            } 
+                        </div>
                     </>
                     :
                     <>
