@@ -241,6 +241,30 @@ def deleteRecruiter(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 """
+Endpoint to remove a list of students (only accessible by admins).
+"""
+@api_view(['POST'])
+def deleteStudents(request):
+    if request.method == 'POST':
+        if request.data["type"] == "Administrator":
+            student_pid_list = request.data["students"]
+            dont_exist = []
+            for stud in student_pid_list:
+                if models.Student.objects.get(pid=stud):
+                    student = models.Student.objects.get(pid=stud)
+                    if student.resume:
+                        os.remove(os.path.join(settings.MEDIA_ROOT, student.resume.name))
+                    user = student.user
+                    student.delete()
+                    user.delete()
+                else:
+                    dont_exist.append(stud)
+
+            return Response({"invalid_pids": dont_exist}, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+"""
 Let's an admin delete a skill tag
 """
 @api_view(['POST'])

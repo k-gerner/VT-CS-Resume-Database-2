@@ -85,12 +85,12 @@ export default function CreateRecruiter({currUser}) {
                         <Form>
                             <div className="form-group">
                                 <FormLabel>First name</FormLabel>
-                                <input type="text" className="form-control" placeholder="Email" ref={firstRef}/>
+                                <input type="text" className="form-control" placeholder="First Name" ref={firstRef}/>
                             </div>
                             <br/>
                             <div className="form-group">
                                 <FormLabel>Last Name</FormLabel>
-                                <input type="text" className="form-control" placeholder="Email" ref={lastRef}/>
+                                <input type="text" className="form-control" placeholder="Last Name" ref={lastRef}/>
                             </div>
                             <br/>
                             <div className="form-group">

@@ -23,4 +23,5 @@ urlpatterns = [
     path('update-student-class/', views.updateStudentClass, name="update-student-class"),
     path('admin-add-tags/', views.adminSkillTagAdd, name="admin-add-tags"),
     path('admin-delete-tag/', views.adminDeleteTag, name="admin-delete-tag"),
+    path('delete-students/', views.deleteStudents, name="delete-students"),
 ]

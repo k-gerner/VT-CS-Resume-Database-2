@@ -34,8 +34,8 @@ export default function Navigation ({currUser}) {
             :
               <>
               <Nav.Link className="navLink" href="/view-all-students" style={textStyle}>View All Students</Nav.Link>
-              <Nav.Link className="navLink" href="/view-all-recruiters" style={textStyle}>Recruiters</Nav.Link>
               <Nav.Link className="navLink" href="/all-skill-tags" style={textStyle}>Skill Tags</Nav.Link>
+              <Nav.Link className="navLink" href="/view-all-recruiters" style={textStyle}>Recruiters</Nav.Link>
               <Nav.Link className="navLink" href="/create-recruiter" style={textStyle}>Create Recruiter</Nav.Link>
               <Nav.Link className="navLink" href="/" style={textStyle}>Logout</Nav.Link>
               </>

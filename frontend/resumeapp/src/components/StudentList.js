@@ -1,9 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import { Card, CardGroup } from 'react-bootstrap';
+import { Card, CardGroup, Modal, Button } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 export default function StudentList ({currUser}) {
     const [students, setStudents] = useState([]);
+    const [show, setShow] = useState(false);
+    const [deleteStud, setDeleteStud] = useState(null);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         let isUnmount = false;
@@ -35,6 +40,37 @@ export default function StudentList ({currUser}) {
         }
 
     }, [])
+
+    const openDeleteBox = (toRemoveStudentUsername) => {
+        setDeleteStud(toRemoveStudentUsername);
+        handleShow();
+    }
+
+    const removeStudent = async () => {
+        const toRemovePackage = {
+            "type": currUser.type,
+            "students": [deleteStud],
+        }
+        
+        await fetch('http://localhost:8000/api/delete-students/', { 
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(toRemovePackage)
+        })
+
+        const res = await fetch('http://localhost:8000/api/all-students/', { 
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({"Type": currUser.type})
+        })
+
+        const jsonData = await res.json();
+        setStudents(jsonData);
+
+
+        handleClose();
+    }
+
 
     const skillTagConvert = (skillTags) => {
         var tempArr = []
@@ -73,6 +109,7 @@ export default function StudentList ({currUser}) {
                                 <Card.Body style={{textAlign: 'center'}}>
                                     <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
                                     <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
+                                    <Button variant="danger" onClick={() => openDeleteBox(stud.pid)}>Delete</Button>
                                 </Card.Body>
                                 <Card.Footer style={{textAlign: 'center'}}>
                                     {skillTagConvert(stud.skill_tags).join(", ")}
@@ -82,6 +119,20 @@ export default function StudentList ({currUser}) {
                         </CardGroup>
                     ))
                     } 
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                        <Modal.Title>Are You Sure?</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Delete student {deleteStud}?</Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="danger" onClick={removeStudent}>
+                            Delete
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
                 :
                 <>
