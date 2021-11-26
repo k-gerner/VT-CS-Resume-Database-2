@@ -70,7 +70,7 @@ export default function Login({currUser, setCurrUser}) {
 
     let logoutStyle = {
         fontSize: 35,
-        marginLeft: "50%"
+        marginLeft: "45%"
     }
 
     return (
