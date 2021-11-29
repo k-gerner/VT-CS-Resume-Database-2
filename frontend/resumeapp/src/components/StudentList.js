@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Card, CardGroup, Modal, Button } from 'react-bootstrap';
+import { Card, CardGroup, Modal, Button, Form } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 export default function StudentList ({currUser}) {
@@ -67,8 +67,24 @@ export default function StudentList ({currUser}) {
         const jsonData = await res.json();
         setStudents(jsonData);
 
-
         handleClose();
+    }
+
+
+    const searchChange = async (e) => {
+        const pidSearch = {
+            "type": currUser.type,
+            "searchPID": e.target.value
+        }
+
+        const res = await fetch('http://localhost:8000/api/pid-search/', { 
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pidSearch)
+        })
+
+        const jsonData = await res.json();
+        setStudents(jsonData);
     }
 
 
@@ -92,10 +108,21 @@ export default function StudentList ({currUser}) {
         marginBottom: 25
     }
 
+    let paddingStyle = {
+        paddingLeft:"1%",
+        paddingRight:"1%"
+    }
+
     return (
         <>
-            {currUser !== null && currUser.type === "Administrator"?
-                <div>
+            {currUser !== null && currUser.type === "Administrator" ?
+                <div style={paddingStyle}>
+                    <Form>
+                        <div className="form-group" style={{paddingTop: "1%"}}>
+                            <input type="text" className="form-control" placeholder="Search by PID" onChange={searchChange}/>
+                        </div>
+                    </Form>
+                    <br/>
                     {students.map((stud, idx) => (
                         <CardGroup>
                             <Card

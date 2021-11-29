@@ -261,6 +261,34 @@ def deleteStudents(request):
                     dont_exist.append(stud)
 
             return Response({"invalid_pids": dont_exist}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+"""
+Searches for students given PID.
+"""
+@api_view(['POST'])
+def studentPidSearch(request):
+    if request.method == 'POST':
+        if request.data["type"] == "Administrator":
+            searchPID = request.data["searchPID"].lower()
+            if not searchPID:
+                try:
+                    students = models.Student.objects.all().order_by('first_name')
+                except models.Student.DoesNotExist:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                try:
+                    students = models.Student.objects.filter(pid__icontains=searchPID).all()
+                except models.Student.DoesNotExist:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+            studentSerializer = serializers.StudentSerializer(students, many=True)
+            return Response(studentSerializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 

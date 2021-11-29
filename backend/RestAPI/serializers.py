@@ -18,7 +18,6 @@ class SkillTagSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
     skill_tags = SkillTagSerializer(many=True)
-
     class Meta:
         model = models.Student
         fields = ['first_name', 'last_name', 'email', 'pid', 'class_standing', 'skill_tags', 'resume']
