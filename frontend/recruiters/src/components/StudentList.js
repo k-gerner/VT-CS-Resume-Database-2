@@ -62,6 +62,28 @@ export default function StudentList ({currUser}) {
             
         }
 
+        const skillsStorage = localStorage.getItem('selectedSkills');
+        if(skillsStorage && skillsStorage !== "null") {
+            var tempSkills = [];
+            skillsStorage.split("-").map((tag) => (
+                tempSkills.push({
+                    value: tag, label: tag
+                })
+            ))
+            setSelectedSkills(tempSkills);
+        }
+
+        const classStorage = localStorage.getItem('selectedClasses');
+        if(classStorage && classStorage !== "null") {
+            var tempClasses = [];
+            classStorage.split("-").map((classS) => (
+                tempClasses.push({
+                    value: classS, label: classS
+                })
+            ))
+            setSelectedClasses(tempClasses);
+        }
+
         return () => {
             isUnmount = true;
         }
@@ -71,8 +93,14 @@ export default function StudentList ({currUser}) {
     const skillSelect = (selectedSkills) => {
         if(selectedSkills.length <= 0) {
             setSelectedSkills(null);
+            localStorage.setItem('selectedSkills', null);
             return;
         }
+        var tempSkills = "";
+        selectedSkills.map((skill) => (
+            tempSkills += skill['value'] + "-"
+        ))
+        localStorage.setItem('selectedSkills', tempSkills.substring(0, tempSkills.length - 1));
         setSelectedSkills(selectedSkills);
         
     }
@@ -80,14 +108,22 @@ export default function StudentList ({currUser}) {
     const classSelect = (selectedClasses) => {
         if(selectedClasses.length <= 0) {
             setSelectedClasses(null);
+            localStorage.setItem('selectedClasses', null);
             return;
         }
+        var tempClasses = "";
+        selectedClasses.map((skill) => (
+            tempClasses += skill['value'] + "-"
+        ))
+        localStorage.setItem('selectedClasses', tempClasses.substring(0, tempClasses.length - 1));
         setSelectedClasses(selectedClasses);
     }
 
     const clearFilters = () => {
         setSelectedSkills(null);
+        localStorage.setItem('selectedSkills', null);
         setSelectedClasses(null);
+        localStorage.setItem('selectedClasses', null);
     }
 
     const formatSkillSearchPackage = () => {
@@ -105,11 +141,11 @@ export default function StudentList ({currUser}) {
 
     const formatClassSearchPackage = () => {
         if(selectedClasses !== null) {
-            var tempSkills = "";
+            var tempClasses = "";
             selectedClasses.map((skill) => (
-                tempSkills += skill['value'] + "-"
+                tempClasses += skill['value'] + "-"
             ))
-            return tempSkills.substring(0, tempSkills.length - 1);
+            return tempClasses.substring(0, tempClasses.length - 1);
         }
         else {
             return null;
