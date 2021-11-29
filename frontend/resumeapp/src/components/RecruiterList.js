@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Button, Card, CardGroup, Modal, Row, Col } from 'react-bootstrap';
+import { Button, Card, Modal, Row, Col, Form } from 'react-bootstrap';
 
 export default function RecruiterList({currUser}) {
     const [recruiters, setRecruiters] = useState([]);
@@ -71,6 +71,22 @@ export default function RecruiterList({currUser}) {
         handleClose();
     }
 
+    const searchChange = async (e) => {
+        const companySearch = {
+            "type": currUser.type,
+            "companyName": e.target.value
+        }
+
+        const res = await fetch('http://localhost:8000/api/company-search/', { 
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(companySearch)
+        })
+
+        const jsonData = await res.json();
+        setRecruiters(jsonData);
+    }
+
 
     // <---------------- STYLING ---------------->
     let h1Style = {
@@ -90,7 +106,12 @@ export default function RecruiterList({currUser}) {
         <div>
             {currUser !== null && currUser.type === "Administrator"?
                 <div style={allPaddingStyle}>
-                    <h1>Recruiters</h1>
+                    <Form>
+                        <div className="form-group" style={{paddingTop: "1%"}}>
+                            <input type="text" className="form-control" placeholder="Search by company" onChange={searchChange}/>
+                        </div>
+                    </Form>
+                    <br/>
                     <Row>
                         {recruiters.map((rec, idx) => (
                             <Col xs={4}>

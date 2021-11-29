@@ -293,6 +293,25 @@ def studentPidSearch(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 """
+Searches for recruiters given company name.
+"""
+@api_view(['POST'])
+def recruiterCompanySearch(request):
+    if request.method == 'POST':
+        if request.data["type"] == "Administrator":
+            companyName = request.data["companyName"].lower()
+            try:
+                recruiters = models.Recruiter.objects.filter(company_name__icontains=companyName).all()
+            except models.Recruiter.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            recruiterSerializer = serializers.RecruiterSerializer(recruiters, many=True)
+            return Response(recruiterSerializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+"""
 Let's an admin delete a skill tag
 """
 @api_view(['POST'])

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
-import StudentCards from './StudentCards';
+import { Modal, Button, Form, Card, Row, Col } from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 
 export default function StudentList ({currUser}) {
     const [students, setStudents] = useState([]);
@@ -123,10 +123,29 @@ export default function StudentList ({currUser}) {
                         </div>
                     </Form>
                     <br/>
-                    <StudentCards
-                        currUser={currUser}
-                        students={students}
-                    />
+                    <Row>
+                    {students.map((stud, idx) => (
+                            <Col xs={4}>
+                                <Card
+                                bg="light"
+                                key={idx}
+                                text="dark"
+                                className="mb-2">
+                                
+                                <Card.Header style={{textAlign: 'center'}}>{stud.pid}</Card.Header>
+                                <Card.Body style={{textAlign: 'center'}}>
+                                    <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
+                                    <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
+                                    <Button variant="danger" onClick={() => openDeleteBox(stud.pid)}>Delete</Button>
+                                </Card.Body>
+                                <Card.Footer style={{textAlign: 'center'}}>
+                                    {skillTagConvert(stud.skill_tags).join(", ")}
+                                </Card.Footer>
+                            </Card>
+                            </Col>
+                            )
+                        )}
+                    </Row>
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
                         <Modal.Title>Are You Sure?</Modal.Title>
