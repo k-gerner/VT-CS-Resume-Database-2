@@ -98,7 +98,6 @@ export default function RecruiterList({currUser}) {
                                     bg="light"
                                     key={idx}
                                     text="dark"
-                                    style={{ width: "18rem" }}
                                     className="mb-2">
                                     <Card.Header style={{textAlign: 'center'}}>{rec.user.username}</Card.Header>
                                     <Card.Body style={{textAlign: 'center'}}>
