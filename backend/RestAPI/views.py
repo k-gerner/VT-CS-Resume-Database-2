@@ -8,6 +8,7 @@ from . import serializers
 import os
 from django.conf import settings
 import pdfplumber
+from django.db.models import Q
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -282,7 +283,7 @@ def studentPidSearch(request):
                     return Response(status=status.HTTP_404_NOT_FOUND)
             else:
                 try:
-                    students = models.Student.objects.filter(pid__icontains=searchPID).all()
+                    students = models.Student.objects.filter(Q(pid__icontains=searchPID) | Q(class_standing__icontains=searchPID)).all()
                 except models.Student.DoesNotExist:
                     return Response(status=status.HTTP_404_NOT_FOUND)
             studentSerializer = serializers.StudentSerializer(students, many=True)

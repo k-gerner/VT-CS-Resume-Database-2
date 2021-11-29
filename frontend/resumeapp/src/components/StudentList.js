@@ -119,7 +119,7 @@ export default function StudentList ({currUser}) {
                 <div style={paddingStyle}>
                     <Form>
                         <div className="form-group" style={{paddingTop: "1%"}}>
-                            <input type="text" className="form-control" placeholder="Search by PID" onChange={searchChange}/>
+                            <input type="text" className="form-control" placeholder="Search by PID or Class" onChange={searchChange}/>
                         </div>
                     </Form>
                     <br/>
