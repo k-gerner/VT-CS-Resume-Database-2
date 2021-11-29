@@ -1,0 +1,7 @@
+#!/bin/bash
+sudo docker build -t docker.cs.vt.edu/charanb2000/cas-test/test .  
+sudo docker push  docker.cs.vt.edu/charanb2000/cas-test/test:latest
+
+
+
+

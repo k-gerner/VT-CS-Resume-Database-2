@@ -1,1 +1,41 @@
-<h1>added from picture other echo line fjksdhfjsdkhfsd Hello World Header added with dash</h1>
+<!DOCTYPE html>
+<html>
+
+
+<body>
+<h1 id = "username">fjksdjfkdsjfds</h1>
+<h1 id = "email"></h1>
+<h1 id = "affil"></h1>
+
+<script>
+    
+    var request = new XMLHttpRequest();
+    request.open('GET', document.location, false);
+    request.send(null);
+    var newHeaders = request.getAllResponseHeaders().toLowerCase();
+    console.log(newHeaders);
+    var arr = newHeaders.trim().split(/[\r\n]+/);
+    arr.forEach(function(curr){
+        var parts = curr.split(": ");
+        console.log(parts)
+        var header = parts[0]
+        var data = parts[1]
+        if(header == "cas_username"){
+            document.getElementById("username").innerHTML = data
+        }
+        else if(header == "cas_email"){
+            document.getElementById("email").innerHTML = data
+        }
+        else if(header == "cas_affiliation"){
+            document.getElementById("affil").innerHTML = data
+        }
+
+
+
+    })
+
+</script>
+</body>
+
+
+</html>
