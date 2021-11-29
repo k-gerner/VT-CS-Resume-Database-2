@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const data = localStorage.getItem('currUser');
-    if(data) {
+    if(data && data !== "null") {
       fetch('http://localhost:8000/api/cas-exists/', { 
           method: 'POST',
           headers: { "Content-Type": "application/json" },

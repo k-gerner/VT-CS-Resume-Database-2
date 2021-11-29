@@ -1,9 +1,12 @@
 import React, {useEffect, useState } from 'react';
+import { useHistory } from "react-router-dom";
 import StudentInfo from './StudentInfo';
 import StudentResume from './StudentResume';
-import {Alert} from 'react-bootstrap';
+import {Alert, Button} from 'react-bootstrap';
 
 export default function StudentDetail({ match, currUser }) {
+    let history = useHistory();
+
     const [currStudent, setCurrStudent] = useState(null);
     const [loading, setLoading] = useState(true)
 
@@ -39,10 +42,18 @@ export default function StudentDetail({ match, currUser }) {
         }
     }, [match.params.pid])
 
+    let btnStyle = {
+        backgroundColor: "#E95420",
+        borderColor: "#E95420",
+        marginLeft:"1%",
+        marginTop:"1%"
+    }
+
     return (
         <>
             {(currUser !== null && currUser.type === "Recruiter" && currStudent !== null) || loading ?
                 <>
+                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={() => history.goBack()}>Back</Button>
                     <div className="outerProfile">
                         <div className="profileDetails">
                             <StudentInfo currStudent={currStudent} />
