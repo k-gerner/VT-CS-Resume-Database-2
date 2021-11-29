@@ -23,12 +23,14 @@ export default function Navigation ({currUser}) {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
           <Nav.Link className="navLink" href="/find-students" style={textStyle}>Find Students</Nav.Link>
+        </Nav>
+        <Nav className="ms-auto">
           <Nav.Link className="navLink" href="/password-update" style={textStyle}>Update Password</Nav.Link>
           {currUser === null ?
-            <Nav.Link className="navLink" href="/" style={textStyle}>Login</Nav.Link>
-            :
-            <Nav.Link className="navLink" href="/" style={textStyle}>Logout</Nav.Link>
-          }
+              <Nav.Link className="navLink" href="/" style={textStyle}>Login</Nav.Link>
+              :
+              <Nav.Link className="navLink" href="/" style={textStyle}>Logout</Nav.Link>
+            }
         </Nav>
       </Navbar.Collapse>
     </Container>

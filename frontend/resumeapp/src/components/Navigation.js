@@ -29,7 +29,6 @@ export default function Navigation ({currUser}) {
               <>
               <Nav.Link className="navLink" href="/profile" style={textStyle}>Profile</Nav.Link>
               <Nav.Link className="navLink" href="/upload-resume" style={textStyle}>Upload Resume</Nav.Link>
-              <Nav.Link className="navLink" href="/" style={textStyle}>Logout</Nav.Link>
               </>
             :
               <>
@@ -37,10 +36,12 @@ export default function Navigation ({currUser}) {
               <Nav.Link className="navLink" href="/all-skill-tags" style={textStyle}>Skill Tags</Nav.Link>
               <Nav.Link className="navLink" href="/view-all-recruiters" style={textStyle}>Recruiters</Nav.Link>
               <Nav.Link className="navLink" href="/create-recruiter" style={textStyle}>Create Recruiter</Nav.Link>
-              <Nav.Link className="navLink" href="/" style={textStyle}>Logout</Nav.Link>
               </>
             
           }
+        </Nav>
+        <Nav className="ms-auto">
+          <Nav.Link className="navLink" href="/" style={textStyle}>Logout</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>

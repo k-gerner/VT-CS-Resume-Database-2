@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { Card, CardGroup } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import Select from 'react-select';
 import {Button} from 'react-bootstrap';
+import StudentCards from './StudentCards';
 
 export default function StudentList ({currUser}) {
     const [students, setStudents] = useState([]);
@@ -117,19 +117,6 @@ export default function StudentList ({currUser}) {
     }
 
 
-    const skillTagConvert = (skillTags) => {
-        var tempArr = []
-        skillTags.map((tag) => (
-            tempArr.push(tag.name)
-        ))
-        return tempArr;
-    }
-
-
-    const capitalize = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
-
     // <---------------- STYLING ---------------->
     let h1Style = {
         textAlign: 'center',
@@ -154,7 +141,7 @@ export default function StudentList ({currUser}) {
                 <div>
                     <br/>
 
-                    <label>Select Class:</label>
+                    <label>Select Desired Class Levels:</label>
                     <Select 
                         value={selectedClasses}
                         onChange={classSelect}
@@ -165,7 +152,7 @@ export default function StudentList ({currUser}) {
 
                     <br/>
 
-                    <label>Select Skill Tags:</label>
+                    <label>Select Necessary Skills:</label>
                     <Select 
                         value={selectedSkills}
                         onChange={skillSelect}
@@ -186,28 +173,11 @@ export default function StudentList ({currUser}) {
 
                     <br/>
 
-                    {students.map((stud, idx) => (
-                        <CardGroup>
-                            <Card
-                                bg="light"
-                                key={idx}
-                                text="dark"
-                                style={{ width: "18rem" }}
-                                className="mb-2">
-                                
-                                <Card.Header style={{textAlign: 'center'}}>{stud.pid}</Card.Header>
-                                <Card.Body style={{textAlign: 'center'}}>
-                                    <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
-                                    <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
-                                </Card.Body>
-                                <Card.Footer style={{textAlign: 'center'}}>
-                                    {skillTagConvert(stud.skill_tags).join(", ")}
-                                </Card.Footer>
-                            </Card>
+                    <StudentCards
+                        currUser={currUser}
+                        students={students}
+                    />
 
-                        </CardGroup>
-                    ))
-                    } 
                 </div>
                 :
                 <>

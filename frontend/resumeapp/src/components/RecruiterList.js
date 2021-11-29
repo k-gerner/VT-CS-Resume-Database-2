@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Button, Card, CardGroup, Modal } from 'react-bootstrap';
+import { Button, Card, CardGroup, Modal, Row, Col } from 'react-bootstrap';
 
 export default function RecruiterList({currUser}) {
     const [recruiters, setRecruiters] = useState([]);
@@ -79,28 +79,38 @@ export default function RecruiterList({currUser}) {
         marginBottom: 25
     }
 
+    let allPaddingStyle = {
+        paddingLeft:"1%",
+        paddingRight:"1%",
+        paddingTop: "1%",
+        paddingBottom: "1%"
+    }
+
     return (
         <div>
             {currUser !== null && currUser.type === "Administrator"?
-                <div>
-                    {recruiters.map((rec, idx) => (
-                        <CardGroup>
-                            <Card
-                                bg="light"
-                                key={idx}
-                                text="dark"
-                                style={{ width: "18rem" }}
-                                className="mb-2">
-                                <Card.Header style={{textAlign: 'center'}}>{rec.user.username}</Card.Header>
-                                <Card.Body style={{textAlign: 'center'}}>
-                                    <Card.Title>{rec.first_name + " " + rec.last_name}</Card.Title>
-                                    <Card.Text>{rec.company_name}</Card.Text>
-                                    <Button variant="danger" onClick={() => openDeleteBox(rec.user.username)}>Delete</Button>
-                                </Card.Body>
-                            </Card>
-                        </CardGroup>
-                        ))
-                    } 
+                <div style={allPaddingStyle}>
+                    <h1>Recruiters</h1>
+                    <Row>
+                        {recruiters.map((rec, idx) => (
+                            <Col xs={4}>
+                                <Card
+                                    bg="light"
+                                    key={idx}
+                                    text="dark"
+                                    style={{ width: "18rem" }}
+                                    className="mb-2">
+                                    <Card.Header style={{textAlign: 'center'}}>{rec.user.username}</Card.Header>
+                                    <Card.Body style={{textAlign: 'center'}}>
+                                        <Card.Title>{rec.first_name + " " + rec.last_name}</Card.Title>
+                                        <Card.Text>{rec.company_name}</Card.Text>
+                                        <Button variant="danger" onClick={() => openDeleteBox(rec.user.username)}>Delete</Button>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            ))
+                        } 
+                    </Row>
 
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import {Button, Card, CardGroup } from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import {Button } from 'react-bootstrap';
 import {Alert} from 'react-bootstrap';
+import StudentCards from './StudentCards';
 
 export default function StudentSearch({match, currUser}) {
     const [students, setStudents] = useState([]);
     const [classSearch, setClassSearch] = useState([]);
     const [skillSearch, setSkillSearch] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const skills = match.params.skills;
@@ -59,6 +60,7 @@ export default function StudentSearch({match, currUser}) {
             .then((jsonData) => {
                 if(!isUnmount && jsonData !== null) {
                     setStudents(jsonData);
+                    setLoading(false);
                 }
             })
         }
@@ -68,20 +70,6 @@ export default function StudentSearch({match, currUser}) {
         }
 
     }, [match.params.classes, match.params.skills])
-
-
-    const skillTagConvert = (skillTags) => {
-        var tempArr = []
-        skillTags.map((tag) => (
-            tempArr.push(tag.name)
-        ))
-        return tempArr;
-    }
-
-
-    const capitalize = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
 
 
     // <---------------- STYLING ---------------->
@@ -106,34 +94,16 @@ export default function StudentSearch({match, currUser}) {
         <>
             {currUser !== null && currUser.type === "Recruiter"?
                 <div>
-                    {students.length > 0 ? 
+                    {students.length > 0 || loading ? 
                     <>
                         <Button style={btnStyle} className="btn btn-primary mb-2" href="/find-students">Back to Search</Button>
                         <div style={paddingStyle}>
                             <h1 style={h1Style}>Search Results</h1>
 
-                            {students.map((stud, idx) => (
-                                <CardGroup>
-                                    <Card
-                                        bg="light"
-                                        key={idx}
-                                        text="dark"
-                                        style={{ width: "18rem" }}
-                                        className="mb-2">
-                                        
-                                        <Card.Header style={{textAlign: 'center'}}>{stud.pid}</Card.Header>
-                                        <Card.Body style={{textAlign: 'center'}}>
-                                            <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
-                                            <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
-                                        </Card.Body>
-                                        <Card.Footer style={{textAlign: 'center'}}>
-                                            {skillTagConvert(stud.skill_tags).join(", ")}
-                                        </Card.Footer>
-                                    </Card>
-
-                                </CardGroup>
-                            ))
-                            } 
+                            <StudentCards
+                                currUser={currUser}
+                                students={students}
+                            />
                         </div>
                     </>
                     :
