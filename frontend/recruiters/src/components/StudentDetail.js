@@ -5,6 +5,7 @@ import {Alert} from 'react-bootstrap';
 
 export default function StudentDetail({ match, currUser }) {
     const [currStudent, setCurrStudent] = useState(null);
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         let isUnmount = false;
@@ -28,6 +29,7 @@ export default function StudentDetail({ match, currUser }) {
                 if(!isUnmount) {
                     console.log(jsonData.resume);
                     setCurrStudent(jsonData);
+                    setLoading(false);
                 }
             })
         }
@@ -39,7 +41,7 @@ export default function StudentDetail({ match, currUser }) {
 
     return (
         <>
-            {currUser !== null && currUser.type === "Recruiter" && currStudent !== null ?
+            {(currUser !== null && currUser.type === "Recruiter" && currStudent !== null) || loading ?
                 <>
                     <div className="outerProfile">
                         <div className="profileDetails">
