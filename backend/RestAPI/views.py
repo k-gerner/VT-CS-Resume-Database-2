@@ -484,53 +484,81 @@ def search(request):
             skills = request.data['skills']
             classes = request.data['classes']
             
-            skillsIsNone = skills[0] == "null"
-            classesIsNone = classes[0] == "null"
+            searching_skills = skills[0] != "null"
+            searching_classes = classes[0] != "null"
+            print("searching_skills: %s\nsearching_classes: %s" % (str(searching_skills), str(searching_classes)))
 
-            if not skillsIsNone and not classesIsNone:
-                queryset = models.Student.objects.all()
-                stud_matches = []
-
-                for stud in queryset.iterator():
-                    stud_skills_arr = []
-                    for tag in getattr(stud, 'skill_tags').iterator():
-                        stud_skills_arr.append(tag.name)
-                    
-                    if set(skills).issubset(set(stud_skills_arr)):
-                        stud_matches.append(stud.id)
-                
+            if searching_skills and searching_classes:
                 classes = [elem.upper() for elem in classes]
-                students = models.Student.objects.filter(class_standing__in=classes, id__in=stud_matches).order_by('first_name')
-                studentSerializer = serializers.StudentSerializer(students, many=True)
-                return Response(studentSerializer.data, status=status.HTTP_200_OK)
-
-
-            elif not skillsIsNone:
-                queryset = models.Student.objects.all()
-                stud_matches = []
+                queryset = models.Student.objects.filter(class_standing__in=classes)
+                skills_searched = set(skills)
+                num_matches_dict = {} # maps student id to # skill tag matches
 
                 for stud in queryset.iterator():
                     stud_skills_arr = []
                     for tag in getattr(stud, 'skill_tags').iterator():
                         stud_skills_arr.append(tag.name)
                     
-                    if set(skills).issubset(set(stud_skills_arr)):
-                        stud_matches.append(stud.id)
+                    # if set(skills).issubset(set(stud_skills_arr)):
+                    #     stud_matches.append(stud.id)
+                    for skill in stud_skills_arr:
+                        if skill in skills_searched:
+                            if stud.pid in num_matches_dict:
+                                num_matches_dict[stud.pid] += 1
+                            else:
+                                num_matches_dict[stud.pid] = 1
 
-                students = models.Student.objects.filter(id__in=stud_matches).order_by('first_name')
+                num_matches_dict = {student_id:round(num_matches*100/len(skills)) for student_id, num_matches in num_matches_dict.items() if num_matches >= 0.5*len(skills)}
+                
+                # classes = [elem.upper() for elem in classes]
+                # students = models.Student.objects.filter(class_standing__in=classes, id__in=stud_matches).order_by('first_name')
+                students = queryset.filter(pid__in=num_matches_dict.keys())
+                students = sorted(students, key=lambda s:num_matches_dict[s.pid], reverse=True)
                 studentSerializer = serializers.StudentSerializer(students, many=True)
-                return Response(studentSerializer.data, status=status.HTTP_200_OK)
+                combined_data = {'student_data':studentSerializer.data, 'pid_num_matches':num_matches_dict}
+                # return Response(studentSerializer.data, status=status.HTTP_200_OK)
+                return Response(combined_data, status=status.HTTP_200_OK)
+
+
+            elif searching_skills and not searching_classes:
+                queryset = models.Student.objects.all()
+                skills_searched = set(skills)
+                num_matches_dict = {} # maps student id to # skill tag matches
+
+                for stud in queryset.iterator():
+                    stud_skills_arr = []
+                    for tag in getattr(stud, 'skill_tags').iterator():
+                        stud_skills_arr.append(tag.name)
+                    
+                    # if set(skills).issubset(set(stud_skills_arr)):
+                    #     stud_matches.append(stud.id)
+                    for skill in stud_skills_arr:
+                        if skill in skills_searched:
+                            if stud.pid in num_matches_dict:
+                                num_matches_dict[stud.pid] += 1
+                            else:
+                                num_matches_dict[stud.pid] = 1
+
+                num_matches_dict = {student_id:round(num_matches*100/len(skills)) for student_id, num_matches in num_matches_dict.items() if num_matches >= 0.5*len(skills)}
+
+                students = models.Student.objects.filter(pid__in=num_matches_dict.keys())
+                students = sorted(students, key=lambda s:num_matches_dict[s.pid], reverse=True)
+                studentSerializer = serializers.StudentSerializer(students, many=True)
+                combined_data = {'student_data':studentSerializer.data, 'pid_num_matches':num_matches_dict}
+                # return Response(studentSerializer.data, status=status.HTTP_200_OK)
+                return Response(combined_data, status=status.HTTP_200_OK)
             
-            elif not classesIsNone:
+            elif searching_classes and not searching_skills:
                 classes = [elem.upper() for elem in classes]
                 students = models.Student.objects.filter(class_standing__in=classes).order_by('first_name')
                 studentSerializer = serializers.StudentSerializer(students, many=True)
-                return Response(studentSerializer.data, status=status.HTTP_200_OK)
+                # return Response(studentSerializer.data, status=status.HTTP_200_OK)
+                return Response({'student_data':studentSerializer.data, 'pid_num_matches':{}}, status=status.HTTP_200_OK)
             
             else:
                 students = models.Student.objects.all()
                 studentSerializer = serializers.StudentSerializer(students, many=True)
-                return Response(studentSerializer.data)
+                return Response({'student_data':studentSerializer.data, 'pid_num_matches':{}}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
     else:

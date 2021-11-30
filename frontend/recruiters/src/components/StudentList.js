@@ -212,6 +212,7 @@ export default function StudentList ({currUser}) {
                     <StudentCards
                         currUser={currUser}
                         students={students}
+                        percentMatches={{}}
                     />
 
                 </div>

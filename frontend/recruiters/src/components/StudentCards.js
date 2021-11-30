@@ -1,7 +1,7 @@
 import { Card, Row, Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
-export default function StudentCards ({currUser, students}) {
+export default function StudentCards ({currUser, students, percentMatches}) {
 
     const capitalize = (str) => {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -13,6 +13,19 @@ export default function StudentCards ({currUser, students}) {
             tempArr.push(tag.name)
         ))
         return tempArr;
+    }
+
+    const getStyleColor = (percent) => {
+        if (percent >= 90)
+            return '#179c34' // green
+        else if (percent >= 80)
+            return '#609c17' // yellow green
+        else if (percent >= 70)
+            return '#a6a818' // yellow
+        else if (percent >= 60)
+            return '#a87a18' // yellow orange
+        else
+            return '#a85918' // orange
     }
 
     // <---------------- STYLING ---------------->
@@ -35,7 +48,7 @@ export default function StudentCards ({currUser, students}) {
                                 text="dark"
                                 className="mb-2">
                                 
-                                <Card.Header style={{textAlign: 'center'}}>{stud.pid}</Card.Header>
+                                <Card.Header style={{textAlign:'center', color:'white', backgroundColor: Object.keys(percentMatches).length > 0 ? getStyleColor(percentMatches[stud.pid]) : '#772953'}}>{Object.keys(percentMatches).length > 0 ? percentMatches[stud.pid] + '% match' : stud.pid}</Card.Header>
                                 <Card.Body style={{textAlign: 'center'}}>
                                     <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
                                     <Card.Text>{capitalize(stud.class_standing)}</Card.Text>

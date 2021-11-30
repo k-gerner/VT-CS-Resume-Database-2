@@ -8,6 +8,7 @@ export default function StudentSearch({match, currUser}) {
     const [classSearch, setClassSearch] = useState([]);
     const [skillSearch, setSkillSearch] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [percentMatches, setPercentMatches] = useState({})
 
     useEffect(() => {
         const skills = match.params.skills;
@@ -59,7 +60,9 @@ export default function StudentSearch({match, currUser}) {
             })
             .then((jsonData) => {
                 if(!isUnmount && jsonData !== null) {
-                    setStudents(jsonData);
+                    console.log(jsonData['pid_num_matches'])
+                    setStudents(jsonData['student_data']);
+                    setPercentMatches(jsonData['pid_num_matches'])
                     setLoading(false);
                 }
             })
@@ -103,6 +106,7 @@ export default function StudentSearch({match, currUser}) {
                             <StudentCards
                                 currUser={currUser}
                                 students={students}
+                                percentMatches={percentMatches}
                             />
                         </div>
                     </>
@@ -112,8 +116,8 @@ export default function StudentSearch({match, currUser}) {
                         <Alert variant="danger">
                         <Alert.Heading>No students found with criteria</Alert.Heading>
                             <p>
-                                Classes: {classSearch.join(" or ")} <br/>
-                                Skills: {skillSearch.join(", ")}
+                                Classes: {classSearch.join(" or ") === 'null' ? "(N/A)" : classSearch.join(" or ")} <br/>
+                                Skills: {skillSearch.join(", ") === 'null' ? "(N/A)" : skillSearch.join(", ")}
                             </p>
                         </Alert>
                     </>
