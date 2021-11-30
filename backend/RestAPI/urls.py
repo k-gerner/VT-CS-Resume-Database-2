@@ -25,5 +25,6 @@ urlpatterns = [
     path('admin-delete-tag/', views.adminDeleteTag, name="admin-delete-tag"),
     path('delete-students/', views.deleteStudents, name="delete-students"),
     path('pid-search/', views.studentPidSearch, name="pid-search"),
-    path('company-search/', views.recruiterCompanySearch, name="company-search")
+    path('company-search/', views.recruiterCompanySearch, name="company-search"),
+    path('skill-tag-search/', views.skillTagSearch, name="skill-tag-search"),
 ]

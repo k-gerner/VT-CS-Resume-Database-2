@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import { Button, Card, CardGroup, Modal, InputGroup, FormControl, Alert } from 'react-bootstrap';
+import { Button, Card, CardGroup, Modal, InputGroup, FormControl, Alert, Form } from 'react-bootstrap';
 
 export default function AllSkillTags({currUser}) {
     const [skillTags, setSkillTags] = useState([]);
@@ -35,18 +35,21 @@ export default function AllSkillTags({currUser}) {
         }
     }, [])
 
-    const addSingleTag = async () => {
+    const addTags = async () => {
         setIsValid(true);
         setMessage("");
 
-        const newTag = newTagRef.current.value;
-        if (newTag === "") {
+        var newTags = newTagRef.current.value.split(",").map(function(item) {
+            return item.trim();
+        });
+
+        if (newTags[0] === "") {
             return;
         }
         
         const tagPackage = {
             "type": currUser.type,
-            "tags": [newTag]
+            "tags": newTags
         }
 
         const res = await fetch('http://localhost:8000/api/admin-add-tags/', {
@@ -58,7 +61,7 @@ export default function AllSkillTags({currUser}) {
         const jsonData = await res.json();
 
         const already_exist = jsonData.already_exist;
-        // console.log(already_exist)
+
         if (already_exist.length > 0) {
             setIsValid(false)
             const exists_string = already_exist.join(", ")
@@ -106,6 +109,26 @@ export default function AllSkillTags({currUser}) {
         handleClose();
     }
 
+    const searchChange = async (e) => {
+        const searchTag = {
+            "type": currUser.type,
+            "searchTag": e.target.value
+        }
+
+        const res = await fetch('http://localhost:8000/api/skill-tag-search/', { 
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(searchTag)
+        })
+
+        const jsonData = await res.json();
+        var tempArr = []
+        for (var tag in jsonData) {
+            tempArr.push(tag);
+        }
+        setSkillTags(tempArr);
+    }
+
     // <---------------- STYLING ---------------->
     let h1Style = {
         textAlign: 'center',
@@ -122,18 +145,22 @@ export default function AllSkillTags({currUser}) {
                         :
                         <></>
                     }
-                    <h5 style={{marginLeft: 10, marginTop: 25}}>Add New Skill Tag:</h5>
-                    <InputGroup className="mb-3" style={{width: "35rem", marginLeft: 10}}>
+                    <InputGroup className="mb-3" style={{width: "50rem", marginLeft: 10, marginTop: 25}}>
                         <FormControl
-                            placeholder="New Tag..."
+                            placeholder="Enter new skill tags in a comma seperated list..."
                             aria-label="New Tag"
                             aria-describedby="basic-addon2"
                             ref={newTagRef}
                         />
-                        <Button variant="primary" id="button-addon2" onClick={addSingleTag}>
-                            Add Tag
+                        <Button variant="primary" id="button-addon2" onClick={addTags}>
+                            Add Tags
                         </Button>
                     </InputGroup>
+                    <Form>
+                        <div className="form-group" style={{width: "50rem", marginLeft: 10}}>
+                            <input type="text" className="form-control" placeholder="Search skill tags" onChange={searchChange}/>
+                        </div>
+                    </Form>
                     <div className="outerTags">
                         {skillTags.map((tag, idx) => (
                             <CardGroup>

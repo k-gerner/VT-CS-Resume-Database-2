@@ -278,7 +278,7 @@ def deleteStudents(request):
 
 
 """
-Searches for students given PID.
+Searches for students given PID or class.
 """
 @api_view(['POST'])
 def studentPidSearch(request):
@@ -297,6 +297,33 @@ def studentPidSearch(request):
                     return Response(status=status.HTTP_404_NOT_FOUND)
             studentSerializer = serializers.StudentSerializer(students, many=True)
             return Response(studentSerializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+"""
+Searches for skill tags.
+"""
+@api_view(['POST'])
+def skillTagSearch(request):
+    if request.method == 'POST':
+        if request.data["type"] == "Administrator":
+            searchTag = request.data["searchTag"].lower()
+            if not searchTag:
+                try:
+                    skills = models.SkillTag.objects.all()
+                except models.SkillTag.DoesNotExist:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                try:
+                    skills = models.SkillTag.objects.filter(name__icontains=searchTag).all()
+                except models.SkillTag.DoesNotExist:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+            skill_tags = {}
+            for tag in skills:
+                skill_tags[tag.name] = tag.name
+            return Response(skill_tags, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
     else:
