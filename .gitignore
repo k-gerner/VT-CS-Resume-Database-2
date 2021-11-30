@@ -7,8 +7,5 @@
 # ignore database file
 *.sqlite3
 
-# ignore resume PDFs
-*.pdf
-
 # ignore pycache
 **/__pycache__
