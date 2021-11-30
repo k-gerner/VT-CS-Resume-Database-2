@@ -5,18 +5,19 @@ import {Alert} from 'react-bootstrap';
 
 export default function Profile({currUser}) {
 
-
     return (
         <>
             {currUser !== null && currUser.type === "Student" ?
-                <div className="outerProfile">
-                    <div className="profileDetails">
-                        <StudentInfo currUser={currUser} />
-                    </div>
-                    <div className="resumeView">
-                        <Resume currUser={currUser} />
-                    </div>
-                </ div>
+                <>
+                    <div className="outerProfile">
+                        <div className="profileDetails">
+                            <StudentInfo currUser={currUser} />
+                        </div>
+                        <div className="resumeView">
+                            <Resume currUser={currUser} />
+                        </div>
+                    </ div>
+                </>
             :
             <Alert variant="danger">
                 <Alert.Heading>Something went wrong...</Alert.Heading>

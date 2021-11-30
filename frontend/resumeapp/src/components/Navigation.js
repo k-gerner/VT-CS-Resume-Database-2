@@ -28,7 +28,6 @@ export default function Navigation ({currUser}) {
             currUser.type === "Student" ? 
               <>
               <Nav.Link className="navLink" href="/profile" style={textStyle}>Profile</Nav.Link>
-              <Nav.Link className="navLink" href="/upload-resume" style={textStyle}>Upload Resume</Nav.Link>
               </>
             :
               <>
