@@ -53,7 +53,7 @@ export default function Resume({currUser}) {
                                 <strong className="me-auto">VT CS</strong>
                                 <small>{new Date().toLocaleString("en-US", { month: "long", day:"2-digit" })}</small>
                             </Toast.Header>
-                            <Toast.Body>You have not yet uploaded a resume. It will appear here once you do.</Toast.Body>
+                            <Toast.Body>You have not yet uploaded a resume. It will appear here once you do. Your profile will not be visible by recruiters until you upload a resume.</Toast.Body>
                         </Toast>
                     </div>
                 :
