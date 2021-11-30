@@ -36,7 +36,10 @@ export default function StudentInfo({currStudent}) {
                         >
                             <div className="ms-2 me-auto">
                             <div className="fw-bold">Email</div>
-                                {currStudent.email}
+                                {/* {currStudent.email} */}
+                                <a href={'mailto:' + currStudent.email} >
+                                    {currStudent.email}
+                                </a>
                             </div>
                         </ListGroup.Item>
                         <ListGroup.Item
