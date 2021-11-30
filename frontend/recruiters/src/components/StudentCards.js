@@ -44,7 +44,7 @@ export default function StudentCards ({currUser, students, percentMatches}) {
                                 text="dark"
                                 className="mb-2">
                                 
-                                <Card.Header style={{textAlign:'center', color:'black', backgroundColor: Object.keys(percentMatches).length > 0 ? getStyleColor(percentMatches[stud.pid]) : '#772953'}}>{Object.keys(percentMatches).length > 0 ? percentMatches[stud.pid] + '% match' : stud.pid}</Card.Header>
+                                <Card.Header style={{textAlign:'center', color:Object.keys(percentMatches).length > 0 ? 'black' : 'white', backgroundColor: Object.keys(percentMatches).length > 0 ? getStyleColor(percentMatches[stud.pid]) : '#772953'}}>{Object.keys(percentMatches).length > 0 ? percentMatches[stud.pid] + '% match' : stud.pid}</Card.Header>
                                 <Card.Body style={{textAlign: 'center'}}>
                                     <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
                                     <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
