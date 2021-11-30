@@ -9,10 +9,12 @@ export default function StudentSearch({match, currUser}) {
     const [skillSearch, setSkillSearch] = useState([]);
     const [loading, setLoading] = useState(true);
     const [percentMatches, setPercentMatches] = useState({})
+    const [exactMatches, setExactMatches] = useState(false)
 
     useEffect(() => {
         const skills = match.params.skills;
         const classes = match.params.classes;
+        const exact_matches = match.params.exact_matches === "true";
 
         var skillArr = []
         skillArr = skills.split('-');
@@ -22,6 +24,7 @@ export default function StudentSearch({match, currUser}) {
 
         setClassSearch(classesArr)
         setSkillSearch(skillArr)
+        setExactMatches(exact_matches)
 
         if (skills === null) {
             skillArr = null
@@ -43,7 +46,8 @@ export default function StudentSearch({match, currUser}) {
             const searchPackage = {
                 "skills": skillArr,
                 "classes": classesArr,
-                "Type": tempUser.type
+                "Type": tempUser.type,
+                "exact_matches": exact_matches
             }
             fetch('http://localhost:8000/api/search/', { 
                 method: 'POST',
@@ -118,6 +122,7 @@ export default function StudentSearch({match, currUser}) {
                             <p>
                                 Classes: {classSearch.join(" or ") === 'null' ? "(N/A)" : classSearch.join(" or ")} <br/>
                                 Skills: {skillSearch.join(", ") === 'null' ? "(N/A)" : skillSearch.join(", ")}
+                                {exactMatches && <div><br/>(exact matches only)</div>}
                             </p>
                         </Alert>
                     </>

@@ -523,6 +523,8 @@ def search(request):
             searching_skills = skills[0] != "null"
             searching_classes = classes[0] != "null"
 
+            threshold = 1 if request.data['exact_matches'] else 0.5
+
             if searching_skills and searching_classes:
                 classes = [elem.upper() for elem in classes]
                 queryset = models.Student.objects.filter(Q(class_standing__in=classes), ~Q(resume=''))
@@ -543,7 +545,7 @@ def search(request):
                             else:
                                 num_matches_dict[stud.pid] = 1
 
-                num_matches_dict = {student_id:round(num_matches*100/len(skills)) for student_id, num_matches in num_matches_dict.items() if num_matches >= 0.5*len(skills)}
+                num_matches_dict = {student_id:round(num_matches*100/len(skills)) for student_id, num_matches in num_matches_dict.items() if num_matches >= threshold*len(skills)}
                 
                 # classes = [elem.upper() for elem in classes]
                 # students = models.Student.objects.filter(class_standing__in=classes, id__in=stud_matches).order_by('first_name')
@@ -574,7 +576,7 @@ def search(request):
                             else:
                                 num_matches_dict[stud.pid] = 1
 
-                num_matches_dict = {student_id:round(num_matches*100/len(skills)) for student_id, num_matches in num_matches_dict.items() if num_matches >= 0.5*len(skills)}
+                num_matches_dict = {student_id:round(num_matches*100/len(skills)) for student_id, num_matches in num_matches_dict.items() if num_matches >= threshold*len(skills)}
 
                 students = models.Student.objects.filter(pid__in=num_matches_dict.keys())
                 students = sorted(students, key=lambda s:num_matches_dict[s.pid], reverse=True)

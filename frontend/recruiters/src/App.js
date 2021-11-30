@@ -35,7 +35,7 @@ function App() {
           <Route path="/" exact component={() => <Login currUser={currUser} setCurrUser={setCurrUser} />} />
           <Route path="/find-students" exact component={() => <StudentList currUser={currUser} />} />
           <Route path="/student/:pid" exact component = {(props) => <StudentDetail currUser={currUser} {...props} />} />
-          <Route path="/student-search/:skills/:classes" exact component = {(props)=> <StudentSearch currUser={currUser} {...props} />} />
+          <Route path="/student-search/:skills/:classes/:exact_matches" exact component = {(props)=> <StudentSearch currUser={currUser} {...props} />} />
           <Route path="/password-update" exact component={() => <PasswordUpdate currUser={currUser} />} />
         </Switch>
       </Router>

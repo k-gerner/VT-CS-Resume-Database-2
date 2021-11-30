@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import Select from 'react-select';
-import {Button} from 'react-bootstrap';
+import {Button, ToggleButton} from 'react-bootstrap';
 import StudentCards from './StudentCards';
 
 export default function StudentList ({currUser}) {
@@ -9,6 +9,7 @@ export default function StudentList ({currUser}) {
     const [selectedSkills, setSelectedSkills] = useState(null);
     const [skillOptions, setSkillOptions] = useState(null);
     const [selectedClasses, setSelectedClasses] = useState(null);
+    const [showExactMatches, setShowExactMatches] = useState(false);
 
     const classOptions = [
         {value: 'Freshman', label: 'Freshman'},
@@ -171,6 +172,10 @@ export default function StudentList ({currUser}) {
         paddingRight:"1%"
     }
 
+    let leftPadding = {
+        paddingLeft: "0.4em"
+    }
+
     return (
         <div style={paddingStyle}>
             {currUser !== null && currUser.type === "Recruiter"?
@@ -199,15 +204,27 @@ export default function StudentList ({currUser}) {
 
                     <br/>
 
+                    <ToggleButton
+                        type="checkbox"
+                        checked={showExactMatches}
+                        value="1"
+                        onChange={e => setShowExactMatches(e.currentTarget.checked)}
+                        style={btnStyle}
+                    >
+                        <span style={leftPadding}>Only show students with every selected skill</span>
+                    </ToggleButton>
+
+                    <br/><br/>
+
                     <Button style={btnStyle} className="btn btn-primary mb-2" disabled={selectedSkills === null && selectedClasses === null}>
-                        <Link to={`/student-search/${formatSkillSearchPackage()}/${formatClassSearchPackage()}`}
+                        <Link to={`/student-search/${formatSkillSearchPackage()}/${formatClassSearchPackage()}/${showExactMatches}`}
                             style={{ textDecoration: 'none', color: 'white'}}>
                             Search
                         </Link>
                     </Button> 
                     <Button style={btnStyle} className="btn btn-primary mb-2" onClick={clearFilters} disabled={selectedSkills === null && selectedClasses === null}>Clear</Button>
 
-                    <br/>
+                    <br/><br/>
 
                     <StudentCards
                         currUser={currUser}
