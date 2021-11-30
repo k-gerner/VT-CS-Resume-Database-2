@@ -16,16 +16,12 @@ export default function StudentCards ({currUser, students, percentMatches}) {
     }
 
     const getStyleColor = (percent) => {
-        if (percent >= 90)
-            return '#179c34' // green
-        else if (percent >= 80)
-            return '#609c17' // yellow green
-        else if (percent >= 70)
-            return '#a6a818' // yellow
-        else if (percent >= 60)
-            return '#a87a18' // yellow orange
-        else
-            return '#a85918' // orange
+        var colorVal = 1
+        if(percent < 100){ // if the percent is 100, we want a bright green. Otherwise, we use the gradient
+            colorVal = (0.8 - (100-percent)/100)
+        }
+        var hue = (colorVal * 135 - 15).toString(10);
+        return ["hsl(", hue, ",90%,50%)"].join("");
     }
 
     // <---------------- STYLING ---------------->
@@ -48,7 +44,7 @@ export default function StudentCards ({currUser, students, percentMatches}) {
                                 text="dark"
                                 className="mb-2">
                                 
-                                <Card.Header style={{textAlign:'center', color:'white', backgroundColor: Object.keys(percentMatches).length > 0 ? getStyleColor(percentMatches[stud.pid]) : '#772953'}}>{Object.keys(percentMatches).length > 0 ? percentMatches[stud.pid] + '% match' : stud.pid}</Card.Header>
+                                <Card.Header style={{textAlign:'center', color:'black', backgroundColor: Object.keys(percentMatches).length > 0 ? getStyleColor(percentMatches[stud.pid]) : '#772953'}}>{Object.keys(percentMatches).length > 0 ? percentMatches[stud.pid] + '% match' : stud.pid}</Card.Header>
                                 <Card.Body style={{textAlign: 'center'}}>
                                     <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
                                     <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
