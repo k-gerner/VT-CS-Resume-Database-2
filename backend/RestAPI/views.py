@@ -101,9 +101,18 @@ Endpoint for recruiters and admins to view all students.
 @api_view(['POST'])
 def findAllStudents(request):
     if request.method == 'POST':
-        if request.data["Type"] == "Recruiter" or request.data["Type"] == "Administrator":
+        if request.data["Type"] == "Administrator":
             try:
                 students = models.Student.objects.all().order_by('first_name')
+            except models.Student.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+            studentSerializer = serializers.StudentSerializer(students, many=True)
+            return Response(studentSerializer.data, status=status.HTTP_200_OK)
+
+        elif request.data["Type"] == "Recruiter":
+            try:
+                students = models.Student.objects.filter(~Q(resume='')).order_by('first_name')
             except models.Student.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -486,11 +495,10 @@ def search(request):
             
             searching_skills = skills[0] != "null"
             searching_classes = classes[0] != "null"
-            print("searching_skills: %s\nsearching_classes: %s" % (str(searching_skills), str(searching_classes)))
 
             if searching_skills and searching_classes:
                 classes = [elem.upper() for elem in classes]
-                queryset = models.Student.objects.filter(class_standing__in=classes)
+                queryset = models.Student.objects.filter(Q(class_standing__in=classes), ~Q(resume=''))
                 skills_searched = set(skills)
                 num_matches_dict = {} # maps student id to # skill tag matches
 
@@ -521,7 +529,7 @@ def search(request):
 
 
             elif searching_skills and not searching_classes:
-                queryset = models.Student.objects.all()
+                queryset = models.Student.objects.filter(~Q(resume=''))
                 skills_searched = set(skills)
                 num_matches_dict = {} # maps student id to # skill tag matches
 
@@ -550,7 +558,7 @@ def search(request):
             
             elif searching_classes and not searching_skills:
                 classes = [elem.upper() for elem in classes]
-                students = models.Student.objects.filter(class_standing__in=classes).order_by('first_name')
+                students = models.Student.objects.filter(Q(class_standing__in=classes), ~Q(resume='')).order_by('first_name')
                 studentSerializer = serializers.StudentSerializer(students, many=True)
                 # return Response(studentSerializer.data, status=status.HTTP_200_OK)
                 return Response({'student_data':studentSerializer.data, 'pid_num_matches':{}}, status=status.HTTP_200_OK)
