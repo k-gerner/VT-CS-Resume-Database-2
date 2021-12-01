@@ -76,7 +76,7 @@ export default function StudentSearch({match, currUser}) {
             isUnmount = true;
         }
 
-    }, [match.params.classes, match.params.skills])
+    }, [match.params.classes, match.params.skills, match.params.exact_matches])
 
 
     // <---------------- STYLING ---------------->

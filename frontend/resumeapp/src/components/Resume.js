@@ -95,13 +95,6 @@ export default function Resume({currUser}) {
 
 
     // <---------------- STYLING ---------------->
-    
-    let noResumeStyle = {
-        marginLeft: "30%",
-        marginTop: 10,
-        backgroundColor: "#E95420",
-        borderColor: "#E95420",
-    }
 
     let btnStyle = {
         backgroundColor: "#E95420",
@@ -140,7 +133,15 @@ export default function Resume({currUser}) {
                                 <small>{new Date().toLocaleString("en-US", { month: "long", day:"2-digit" })}</small>
                             </Toast.Header>
                             <Toast.Body>You have not yet uploaded a resume. It will appear here once you do. Your profile will not be visible by recruiters until you upload a resume.
-                            <Button style={noResumeStyle} className="btn btn-primary mb-2" onClick={handleShow}>Add Resume</Button>
+                            <div style={{width: "70%", height: "50%", float:"left", marginBottom: 10, marginTop: 10}}>
+                            <FileUploader 
+                                handleChange={handleChange} 
+                                name="file" 
+                                types={fileTypes} 
+                                
+                            />
+                            </div>
+                            <Button style={btnStyle} className="btn btn-primary mb-2" onClick={upload_file_to_backend} disabled={file === null}>Upload Resume</Button>
                             </Toast.Body>
                         </Toast>
                     </div>
