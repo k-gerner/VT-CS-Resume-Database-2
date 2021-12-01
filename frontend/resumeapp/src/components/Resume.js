@@ -126,7 +126,7 @@ export default function Resume({currUser}) {
                         {/* <Button style={btnStyle} className="btn btn-primary mb-2">Add Resume</Button> */}
                     </>
                     :
-                    <div className="d-flex justify-content-center flex-row" style={{marginTop:'40%'}}>
+                    <div className="d-flex justify-content-center flex-row" style={{marginTop:'15%'}}>
                         <Toast>
                             <Toast.Header closeButton={false}>
                                 <strong className="me-auto">VT CS</strong>
