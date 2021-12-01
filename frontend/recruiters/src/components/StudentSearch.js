@@ -162,7 +162,8 @@ export default function StudentSearch({match, currUser}) {
                         <Alert.Heading>No students found with criteria</Alert.Heading>
                             <p>
                                 Classes: {classSearch.join(" or ") === 'null' ? "(N/A)" : classSearch.join(" or ")} <br/>
-                                Skills: {skillSearch.join(", ") === 'null' ? "(N/A)" : skillSearch.join(", ")}
+                                Skills: {skillSearch.join(", ") === 'null' ? "(N/A)" : skillSearch.join(", ")}<br/>
+                                Job Description: {jobDescriptions.join(" or ") === 'null' ? "(N/A)" : jobDescriptions.join(" or ")}
                                 {exactMatches && <span><br/>(exact matches only)</span>}
                             </p>
                         </Alert>

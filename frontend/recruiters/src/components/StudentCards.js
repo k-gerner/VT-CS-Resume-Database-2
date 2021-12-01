@@ -7,6 +7,15 @@ export default function StudentCards ({currUser, students, percentMatches}) {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 
+    const capitalizeJobDescription = (str) => {
+        if(str.includes(" ")){
+            return "Internship OR Full-time" // spooky hard-coding
+        }
+        else{
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+    }
+
     const skillTagConvert = (skillTags) => {
         var tempArr = []
         skillTags.map((tag) => (
@@ -47,6 +56,7 @@ export default function StudentCards ({currUser, students, percentMatches}) {
                                 <Card.Header style={{textAlign:'center', color:Object.keys(percentMatches).length > 0 ? 'black' : 'white', backgroundColor: Object.keys(percentMatches).length > 0 ? getStyleColor(percentMatches[stud.pid]) : '#772953'}}>{Object.keys(percentMatches).length > 0 ? percentMatches[stud.pid] + '% match' : stud.pid}</Card.Header>
                                 <Card.Body style={{textAlign: 'center'}}>
                                     <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
+                                    <Card.Text>{capitalizeJobDescription(stud.job_description)}</Card.Text>
                                     <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
                                 </Card.Body>
                                 <Card.Footer style={{textAlign: 'center'}}>

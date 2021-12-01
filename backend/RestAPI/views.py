@@ -529,7 +529,7 @@ def search(request):
             threshold = 1 if request.data['exact_matches'] else 0.5
 
             job_descriptions = request.data['job_descriptions']
-            if len(job_descriptions) == 2:
+            if len(job_descriptions) >= 1:
                 job_descriptions.append("INTERNSHIP OR FULL-TIME")
 
             starting_queryset = models.Student.objects.filter(Q(job_description__in=job_descriptions), ~Q(resume=''))
