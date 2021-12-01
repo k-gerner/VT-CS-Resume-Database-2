@@ -30,6 +30,12 @@ class Student(models.Model):
         MASTERS = "MASTERS", "Master's"
         PHD = "PHD", "PhD"
 
+    class JobDescriptions(models.TextChoices):
+        INTERNSHIP = "INTERNSHIP", "Internship"
+        FULL_TIME  = "FULL-TIME", "Full-time"
+        BOTH = "INTERNSHIP OR FULL-TIME", "Internship OR Full-time"
+        NEITHER = "NOT LOOKING FOR WORK", "Not looking for work"
+
 
     # id field is automatically incremented.
     user = models.OneToOneField(User, on_delete=models.CASCADE) # Replacement for CAS. Delete when CAS is integrated.
@@ -40,6 +46,7 @@ class Student(models.Model):
     class_standing = models.CharField(max_length=50, choices = Classes.choices, default=Classes.FRESHMAN)
     skill_tags = models.ManyToManyField(SkillTag, blank=True)
     resume = models.FileField(blank=True, upload_to=resume_upload_path)
+    job_description = models.CharField(max_length=50, choices = JobDescriptions.choices, default=JobDescriptions.BOTH)
 
     def __str__(self):
         return self.pid

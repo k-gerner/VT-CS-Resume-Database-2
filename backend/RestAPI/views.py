@@ -515,7 +515,10 @@ Function to search for students provided parameters.
 def search(request):
     if request.method == 'POST':
 
-        if request.data['Type'] == "Recruiter":
+        if request.data['job_descriptions'][0] == "null":
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        elif request.data['Type'] == "Recruiter":
 
             skills = request.data['skills']
             classes = request.data['classes']
@@ -525,9 +528,15 @@ def search(request):
 
             threshold = 1 if request.data['exact_matches'] else 0.5
 
+            job_descriptions = request.data['job_descriptions']
+            if len(job_descriptions) == 2:
+                job_descriptions.append("INTERNSHIP OR FULL-TIME")
+
+            starting_queryset = models.Student.objects.filter(Q(job_description__in=job_descriptions), ~Q(resume=''))
+
             if searching_skills and searching_classes:
                 classes = [elem.upper().replace("'", "") for elem in classes]
-                queryset = models.Student.objects.filter(Q(class_standing__in=classes), ~Q(resume=''))
+                queryset = starting_queryset.filter(Q(class_standing__in=classes))
                 skills_searched = set(skills)
                 num_matches_dict = {} # maps student id to # skill tag matches
 
@@ -558,7 +567,7 @@ def search(request):
 
 
             elif searching_skills and not searching_classes:
-                queryset = models.Student.objects.filter(~Q(resume=''))
+                queryset = starting_queryset
                 skills_searched = set(skills)
                 num_matches_dict = {} # maps student id to # skill tag matches
 
@@ -587,13 +596,13 @@ def search(request):
             
             elif searching_classes and not searching_skills:
                 classes = [elem.upper().replace("'", "") for elem in classes]
-                students = models.Student.objects.filter(Q(class_standing__in=classes), ~Q(resume='')).order_by('first_name')
+                students = starting_queryset.filter(Q(class_standing__in=classes)).order_by('first_name')
                 studentSerializer = serializers.StudentSerializer(students, many=True)
                 # return Response(studentSerializer.data, status=status.HTTP_200_OK)
                 return Response({'student_data':studentSerializer.data, 'pid_num_matches':{}}, status=status.HTTP_200_OK)
             
             else:
-                students = models.Student.objects.all()
+                students = models.Student.objects.all() # note this case does not filter by job description
                 studentSerializer = serializers.StudentSerializer(students, many=True)
                 return Response({'student_data':studentSerializer.data, 'pid_num_matches':{}}, status=status.HTTP_200_OK)
         else:

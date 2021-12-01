@@ -10,8 +10,9 @@ export default function StudentSearch({match, currUser}) {
     const [classSearch, setClassSearch] = useState([]);
     const [skillSearch, setSkillSearch] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [percentMatches, setPercentMatches] = useState({})
-    const [exactMatches, setExactMatches] = useState(false)
+    const [percentMatches, setPercentMatches] = useState({});
+    const [exactMatches, setExactMatches] = useState(false);
+    const [jobDescriptions, setJobDescriptions] = useState([]);
 
     // For pagination
     const [pageNumber, setPageNumber] = useState(0);
@@ -30,16 +31,21 @@ export default function StudentSearch({match, currUser}) {
         const skills = match.params.skills;
         const classes = match.params.classes;
         const exact_matches = match.params.exact_matches === "true";
+        const job_descriptions = match.params.job_descriptions;
 
         var skillArr = []
-        skillArr = skills.split('-');
+        skillArr = skills.split('_');
 
         var classesArr = []
-        classesArr = classes.split('-');
+        classesArr = classes.split('_');
+
+        var jobDescriptionsArr = []
+        jobDescriptionsArr = job_descriptions.split('_');
 
         setClassSearch(classesArr)
         setSkillSearch(skillArr)
         setExactMatches(exact_matches)
+        setJobDescriptions(jobDescriptionsArr)
 
         if (skills === null) {
             skillArr = null
@@ -47,6 +53,10 @@ export default function StudentSearch({match, currUser}) {
 
         if(classes === null) {
             classesArr = null
+        }
+
+        if(jobDescriptions === null) {
+            jobDescriptionsArr = null
         }
 
         let isUnmount = false;
@@ -62,7 +72,8 @@ export default function StudentSearch({match, currUser}) {
                 "skills": skillArr,
                 "classes": classesArr,
                 "Type": tempUser.type,
-                "exact_matches": exact_matches
+                "exact_matches": exact_matches,
+                "job_descriptions": jobDescriptionsArr,
             }
             fetch('http://localhost:8000/api/search/', { 
                 method: 'POST',

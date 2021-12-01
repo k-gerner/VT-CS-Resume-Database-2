@@ -11,6 +11,7 @@ export default function StudentList ({currUser}) {
     const [selectedSkills, setSelectedSkills] = useState(null);
     const [skillOptions, setSkillOptions] = useState(null);
     const [selectedClasses, setSelectedClasses] = useState(null);
+    const [selectedJobDescriptions, setSelectedJobDescriptions] = useState(null);
     const [showExactMatches, setShowExactMatches] = useState(false);
 
     // For pagination
@@ -33,6 +34,11 @@ export default function StudentList ({currUser}) {
         {value: 'Senior', label: 'Senior'},
         {value: 'Master\'s', label: 'Master\'s'},
         {value: 'PhD', label: 'PhD'}
+    ]
+
+    const jobDescriptionOptions = [
+        {value: 'Internship', label: 'Internship'},
+        {value: 'Full-time', label: 'Full-time'}
     ]
 
 
@@ -81,7 +87,7 @@ export default function StudentList ({currUser}) {
         const skillsStorage = localStorage.getItem('selectedSkills');
         if(skillsStorage && skillsStorage !== "null") {
             var tempSkills = [];
-            skillsStorage.split("-").map((tag) => (
+            skillsStorage.split("_").map((tag) => (
                 tempSkills.push({
                     value: tag, label: tag
                 })
@@ -92,12 +98,23 @@ export default function StudentList ({currUser}) {
         const classStorage = localStorage.getItem('selectedClasses');
         if(classStorage && classStorage !== "null") {
             var tempClasses = [];
-            classStorage.split("-").map((classS) => (
+            classStorage.split("_").map((classS) => (
                 tempClasses.push({
                     value: classS, label: classS
                 })
             ))
             setSelectedClasses(tempClasses);
+        }
+
+        const jobDescriptionStorage = localStorage.getItem('selectedJobDescriptions');
+        if(jobDescriptionStorage && jobDescriptionStorage !== "null") {
+            var tempJobDescriptions = [];
+            jobDescriptionStorage.split("_").map((description) => (
+                tempJobDescriptions.push({
+                    value: description, label: description
+                })
+            ))
+            setSelectedJobDescriptions(tempJobDescriptions);
         }
 
         const exactMatchesStorage = localStorage.getItem('exactMatches');
@@ -119,7 +136,7 @@ export default function StudentList ({currUser}) {
         }
         var tempSkills = "";
         selectedSkills.map((skill) => (
-            tempSkills += skill['value'] + "-"
+            tempSkills += skill['value'] + "_"
         ))
         localStorage.setItem('selectedSkills', tempSkills.substring(0, tempSkills.length - 1));
         setSelectedSkills(selectedSkills);
@@ -134,10 +151,24 @@ export default function StudentList ({currUser}) {
         }
         var tempClasses = "";
         selectedClasses.map((skill) => (
-            tempClasses += skill['value'] + "-"
+            tempClasses += skill['value'] + "_"
         ))
         localStorage.setItem('selectedClasses', tempClasses.substring(0, tempClasses.length - 1));
         setSelectedClasses(selectedClasses);
+    }
+
+    const jobDescriptionSelect = (selectedJobDescriptions) => {
+        if(selectedJobDescriptions.length <= 0) {
+            setSelectedJobDescriptions(null);
+            localStorage.setItem('selectedJobDescriptions', null);
+            return;
+        }
+        var tempJobDescriptions = "";
+        selectedJobDescriptions.map((description) => (
+            tempJobDescriptions += description['value'] + "_"
+        ))
+        localStorage.setItem('selectedJobDescriptions', tempJobDescriptions.substring(0, tempJobDescriptions.length - 1));
+        setSelectedJobDescriptions(selectedJobDescriptions);
     }
 
     const toggleExactMatches = (checked) => {
@@ -150,13 +181,15 @@ export default function StudentList ({currUser}) {
         localStorage.setItem('selectedSkills', null);
         setSelectedClasses(null);
         localStorage.setItem('selectedClasses', null);
+        setSelectedJobDescriptions(null);
+        localStorage.setItem('selectedJobDescriptions', null);
     }
 
     const formatSkillSearchPackage = () => {
         if(selectedSkills !== null) {
             var tempSkills = "";
             selectedSkills.map((skill) => (
-                tempSkills += skill['value'] + "-"
+                tempSkills += skill['value'] + "_"
             ))
             return tempSkills.substring(0, tempSkills.length - 1);
         }
@@ -169,9 +202,22 @@ export default function StudentList ({currUser}) {
         if(selectedClasses !== null) {
             var tempClasses = "";
             selectedClasses.map((skill) => (
-                tempClasses += skill['value'] + "-"
+                tempClasses += skill['value'] + "_"
             ))
             return tempClasses.substring(0, tempClasses.length - 1);
+        }
+        else {
+            return null;
+        }
+    }
+
+    const formatJobDescriptionPackage = () => {
+        if(selectedJobDescriptions !== null && selectedJobDescriptions.length > 0) {
+            var tempJobDescriptions = "";
+            selectedJobDescriptions.map((description) => (
+                tempJobDescriptions += description['value'] + "_"
+            ))
+            return tempJobDescriptions.substring(0, tempJobDescriptions.length - 1);
         }
         else {
             return null;
@@ -229,6 +275,17 @@ export default function StudentList ({currUser}) {
 
                     <br/>
 
+                    <label>Select Job Description:</label> <label style={{color: "red"}}>*</label>
+                    <Select 
+                        value={selectedJobDescriptions}
+                        onChange={jobDescriptionSelect}
+                        options={jobDescriptionOptions}
+                        isMulti={true}
+                        isSearchable={true}
+                    />
+
+                    <br/>
+
                     <ToggleButton
                         type="checkbox"
                         checked={showExactMatches}
@@ -241,13 +298,13 @@ export default function StudentList ({currUser}) {
 
                     <br/><br/>
 
-                    <Button style={btnStyle} className="btn btn-primary mb-2" disabled={selectedSkills === null && selectedClasses === null}>
-                        <Link to={`/student-search/${formatSkillSearchPackage()}/${formatClassSearchPackage()}/${showExactMatches}`}
+                    <Button style={btnStyle} className="btn btn-primary mb-2" disabled={selectedJobDescriptions === null || (selectedSkills === null && selectedClasses === null)}>
+                        <Link to={`/student-search/${formatSkillSearchPackage()}/${formatClassSearchPackage()}/${formatJobDescriptionPackage()}/${showExactMatches}`}
                             style={{ textDecoration: 'none', color: 'white'}}>
                             Search
                         </Link>
                     </Button> 
-                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={clearFilters} disabled={selectedSkills === null && selectedClasses === null}>Clear</Button>
+                    <Button style={btnStyle} className="btn btn-primary mb-2" onClick={clearFilters} disabled={selectedSkills === null && selectedClasses === null && selectedJobDescriptions === null}>Clear</Button>
 
                     <br/><br/>
 
