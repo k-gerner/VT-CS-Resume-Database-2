@@ -15,6 +15,15 @@ export default function StudentInfo({currStudent}) {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 
+    const capitalizeJobDescription = (str) => {
+        if(str.includes(" ")){
+            return "Internship OR Full-time" // spooky hard-coding
+        }
+        else{
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+    }
+
     return (
         <>
             {currStudent !== null ?
@@ -40,6 +49,15 @@ export default function StudentInfo({currStudent}) {
                                 <a href={'mailto:' + currStudent.email} >
                                     {currStudent.email}
                                 </a>
+                            </div>
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            as="li"
+                            className="d-flex justify-content-between align-items-start"
+                        >
+                            <div className="ms-2 me-auto">
+                            <div className="fw-bold">Seeking</div>
+                                {capitalizeJobDescription(currStudent.job_description)}
                             </div>
                         </ListGroup.Item>
                         <ListGroup.Item
