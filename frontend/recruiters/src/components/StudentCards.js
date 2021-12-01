@@ -37,7 +37,7 @@ export default function StudentCards ({currUser, students, percentMatches}) {
                 <div>
                     <Row>
                     {students.map((stud, idx) => (
-                            <Col xs={4}>
+                            <Col xs={4} key={stud.pid}>
                                 <Card
                                 bg="light"
                                 key={idx}
