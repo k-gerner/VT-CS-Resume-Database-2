@@ -78,6 +78,10 @@
     margin-bottom: 25;
 }
 
+.block {
+    display:inline-block;
+}
+
 
 /* For Resume.js toast pop up close button */
 /* (it wasn't styling correctly because our react and react-bootstrap versions are set up weirdly */
