@@ -122,7 +122,7 @@ export default function StudentSearch({match, currUser}) {
                             <p>
                                 Classes: {classSearch.join(" or ") === 'null' ? "(N/A)" : classSearch.join(" or ")} <br/>
                                 Skills: {skillSearch.join(", ") === 'null' ? "(N/A)" : skillSearch.join(", ")}
-                                {exactMatches && <div><br/>(exact matches only)</div>}
+                                {exactMatches && <span><br/>(exact matches only)</span>}
                             </p>
                         </Alert>
                     </>
