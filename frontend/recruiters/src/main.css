@@ -21,3 +21,31 @@
     flex: none;
     padding-right: 1rem;
 }
+
+.pageBtns {
+    width: 80%;
+    height: 40%;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding-left: 18rem;
+}
+
+.pageBtns a {
+    padding: 10px;
+    margin: 8px;
+    border-radius: 5px;
+    border: 1px solid #772953;
+    color: #772953;
+    cursor: pointer;
+}
+
+.pageBtns a:hover {
+    color: white;
+    background-color: #772953;
+}
+
+.pageActive a {
+    color: white;
+    background-color: #772953;
+}

@@ -526,7 +526,7 @@ def search(request):
             threshold = 1 if request.data['exact_matches'] else 0.5
 
             if searching_skills and searching_classes:
-                classes = [elem.upper() for elem in classes]
+                classes = [elem.upper().replace("'", "") for elem in classes]
                 queryset = models.Student.objects.filter(Q(class_standing__in=classes), ~Q(resume=''))
                 skills_searched = set(skills)
                 num_matches_dict = {} # maps student id to # skill tag matches
@@ -586,7 +586,7 @@ def search(request):
                 return Response(combined_data, status=status.HTTP_200_OK)
             
             elif searching_classes and not searching_skills:
-                classes = [elem.upper() for elem in classes]
+                classes = [elem.upper().replace("'", "") for elem in classes]
                 students = models.Student.objects.filter(Q(class_standing__in=classes), ~Q(resume='')).order_by('first_name')
                 studentSerializer = serializers.StudentSerializer(students, many=True)
                 # return Response(studentSerializer.data, status=status.HTTP_200_OK)

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import {Button } from 'react-bootstrap';
 import {Alert} from 'react-bootstrap';
 import StudentCards from './StudentCards';
+import ReactPaginate from 'react-paginate';
+import './../main.css'
 
 export default function StudentSearch({match, currUser}) {
     const [students, setStudents] = useState([]);
@@ -10,6 +12,19 @@ export default function StudentSearch({match, currUser}) {
     const [loading, setLoading] = useState(true);
     const [percentMatches, setPercentMatches] = useState({})
     const [exactMatches, setExactMatches] = useState(false)
+
+    // For pagination
+    const [pageNumber, setPageNumber] = useState(0);
+    const studentsPerPage = 21;
+    const pagesVisited = pageNumber * studentsPerPage;
+
+    const displayStudents = 
+        students.slice(pagesVisited, pagesVisited + studentsPerPage);
+
+    const pageCount = Math.ceil(students.length / studentsPerPage);
+    const changePage = ({selected}) => {
+        setPageNumber(selected);
+    }
 
     useEffect(() => {
         const skills = match.params.skills;
@@ -104,12 +119,27 @@ export default function StudentSearch({match, currUser}) {
                     {students.length > 0 || loading ? 
                     <>
                         <Button style={btnStyle} className="btn btn-primary mb-2" href="/find-students">Back to Search</Button>
+                        
                         <div style={paddingStyle}>
                             <h1 style={h1Style}>Search Results</h1>
 
+                            {pageCount > 1 &&
+                                <ReactPaginate 
+                                    previousLabel={"Previous"}
+                                    nextLabel={"Next"}
+                                    pageCount={pageCount}
+                                    onPageChange={changePage}
+                                    containerClassName={"pageBtns"}
+                                    previousLinkClassName={"prevBtn"}
+                                    nextLinkClassName={"nextBtn"}
+                                    disabledClassName={"pageDisabled"}
+                                    activeClassName={"pageActive"}
+                                />
+                            }
+
                             <StudentCards
                                 currUser={currUser}
-                                students={students}
+                                students={displayStudents}
                                 percentMatches={percentMatches}
                             />
                         </div>

@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { Modal, Button, Form, Card, Row, Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import './../main.css'
 
 export default function StudentList ({currUser}) {
     const [students, setStudents] = useState([]);

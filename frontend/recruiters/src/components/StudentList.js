@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import Select from 'react-select';
 import {Button, ToggleButton} from 'react-bootstrap';
 import StudentCards from './StudentCards';
+import ReactPaginate from 'react-paginate';
+import './../main.css'
 
 export default function StudentList ({currUser}) {
     const [students, setStudents] = useState([]);
@@ -10,6 +12,19 @@ export default function StudentList ({currUser}) {
     const [skillOptions, setSkillOptions] = useState(null);
     const [selectedClasses, setSelectedClasses] = useState(null);
     const [showExactMatches, setShowExactMatches] = useState(false);
+
+    // For pagination
+    const [pageNumber, setPageNumber] = useState(0);
+    const studentsPerPage = 21;
+    const pagesVisited = pageNumber * studentsPerPage;
+
+    const displayStudents = 
+        students.slice(pagesVisited, pagesVisited + studentsPerPage);
+
+    const pageCount = Math.ceil(students.length / studentsPerPage);
+    const changePage = ({selected}) => {
+        setPageNumber(selected);
+    }
 
     const classOptions = [
         {value: 'Freshman', label: 'Freshman'},
@@ -236,12 +251,25 @@ export default function StudentList ({currUser}) {
 
                     <br/><br/>
 
-                    <StudentCards
-                        currUser={currUser}
-                        students={students}
-                        percentMatches={{}}
+                    <ReactPaginate 
+                        previousLabel={"Previous"}
+                        nextLabel={"Next"}
+                        pageCount={pageCount}
+                        onPageChange={changePage}
+                        containerClassName={"pageBtns"}
+                        previousLinkClassName={"prevBtn"}
+                        nextLinkClassName={"nextBtn"}
+                        disabledClassName={"pageDisabled"}
+                        activeClassName={"pageActive"}
                     />
 
+                    <br/>
+
+                    <StudentCards
+                        currUser={currUser}
+                        students={displayStudents}
+                        percentMatches={{}}
+                    />
                 </div>
                 :
                 <>
