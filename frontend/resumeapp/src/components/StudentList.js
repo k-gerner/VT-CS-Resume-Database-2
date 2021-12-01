@@ -12,6 +12,19 @@ export default function StudentList ({currUser}) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    // For pagination
+    const [pageNumber, setPageNumber] = useState(0);
+    const studentsPerPage = 21;
+    const pagesVisited = pageNumber * studentsPerPage;
+
+    const displayStudents = 
+        students.slice(pagesVisited, pagesVisited + studentsPerPage);
+
+    const pageCount = Math.ceil(students.length / studentsPerPage);
+    const changePage = ({selected}) => {
+        setPageNumber(selected);
+    }
+
     useEffect(() => {
         let isUnmount = false;
         const data = localStorage.getItem('currUser');
@@ -125,8 +138,19 @@ export default function StudentList ({currUser}) {
                         </div>
                     </Form>
                     <br/>
+                    <ReactPaginate 
+                        previousLabel={"Previous"}
+                        nextLabel={"Next"}
+                        pageCount={pageCount}
+                        onPageChange={changePage}
+                        containerClassName={"pageBtns"}
+                        previousLinkClassName={"prevBtn"}
+                        nextLinkClassName={"nextBtn"}
+                        disabledClassName={"pageDisabled"}
+                        activeClassName={"pageActive"}
+                    />
                     <Row>
-                    {students.map((stud, idx) => (
+                    {displayStudents.map((stud, idx) => (
                             <Col xs={4}>
                                 <Card
                                 bg="light"
