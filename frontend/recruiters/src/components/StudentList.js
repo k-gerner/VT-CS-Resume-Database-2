@@ -85,6 +85,11 @@ export default function StudentList ({currUser}) {
             setSelectedClasses(tempClasses);
         }
 
+        const exactMatchesStorage = localStorage.getItem('exactMatches');
+        if(exactMatchesStorage && exactMatchesStorage !== "null"){
+            setShowExactMatches(exactMatchesStorage === "true");
+        }
+
         return () => {
             isUnmount = true;
         }
@@ -118,6 +123,11 @@ export default function StudentList ({currUser}) {
         ))
         localStorage.setItem('selectedClasses', tempClasses.substring(0, tempClasses.length - 1));
         setSelectedClasses(selectedClasses);
+    }
+
+    const toggleExactMatches = (checked) => {
+        localStorage.setItem('exactMatches', checked);
+        setShowExactMatches(checked);
     }
 
     const clearFilters = () => {
@@ -208,7 +218,7 @@ export default function StudentList ({currUser}) {
                         type="checkbox"
                         checked={showExactMatches}
                         value="1"
-                        onChange={e => setShowExactMatches(e.currentTarget.checked)}
+                        onChange={e => toggleExactMatches(e.currentTarget.checked)}
                         style={btnStyle}
                     >
                         <span style={leftPadding}>Only show students with every selected skill</span>
