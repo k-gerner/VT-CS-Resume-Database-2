@@ -516,7 +516,7 @@ def search(request):
     if request.method == 'POST':
 
         if request.data['job_descriptions'][0] == "null":
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "missing job_descriptions field"}, status=status.HTTP_400_BAD_REQUEST)
 
         elif request.data['Type'] == "Recruiter":
 
@@ -645,6 +645,26 @@ def uploadResume(request):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+"""
+Endpoint to delete a file from a student's profile. Returns a status
+"""
+@api_view(['POST'])
+def deleteResume(request):
+    if request.method == 'POST':
+        pid = request.data['pid']
+        try:
+            student = models.Student.objects.get(pid=pid)
+        except models.Student.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        current_resume_location = student.resume
+        student.resume = ''
+        os.remove(os.path.join(settings.MEDIA_ROOT, current_resume_location.name))
+        student.save()
+        return Response(status=status.HTTP_200_OK)
+        
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 """
 Helper method to generate suggested skill tags

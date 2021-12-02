@@ -21,6 +21,7 @@ export default function Resume({currUser}) {
     const [suggestedTags, setSuggestedTags] = useState([]);
 	const [success, setSuccess] = useState(false);
     const [alertText, setAlertText] = useState("orginial")
+    const [resumeDeleted, setResumeDeleted] = useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -81,6 +82,7 @@ export default function Resume({currUser}) {
 		.then((res) => {
 			if(res.status === 200) {
 				setSuccess(true)
+                setResumeDeleted(false)
 			}
 			return res.json();
 		})
@@ -91,6 +93,23 @@ export default function Resume({currUser}) {
 		setFile(null)
 	}
 
+    const delete_file_from_backend = () => {
+        var formData = new FormData();
+
+		formData.append('pid', currUser.username.split("@")[0]);
+
+		fetch('http://localhost:8000/api/delete-resume/', { 
+			method: 'POST',
+			body: formData
+		}).then((res) => {
+			if(res.status === 200) {
+                window.location.reload(false);
+				setResumeDeleted(true)
+			}
+		})
+        
+    }
+
 
     // <---------------- STYLING ---------------->
 
@@ -98,6 +117,28 @@ export default function Resume({currUser}) {
         backgroundColor: "#E95420",
         borderColor: "#E95420",
         float: "right"
+    }
+
+    let btnStyleDelete = {
+        backgroundColor: "#E95420",
+        borderColor: "#E95420",
+        float: "left",
+        // display: 'inline-block',
+        width: 100,
+        height:48,
+        // textAlign: 'center',
+        alignItems: 'center',
+        textDecoration: 'none'
+    }
+
+    let btnStyleUpload = {
+        backgroundColor: "#E95420",
+        borderColor: "#E95420",
+        float: "left",
+        // display: 'inline-block',
+        height:48,
+        width: 100,
+        marginRight: 10
     }
 
 
@@ -114,7 +155,10 @@ export default function Resume({currUser}) {
                                 
                             />
                         </div>
-                        <Button style={btnStyle} className="btn btn-primary mb-2" onClick={upload_file_to_backend} disabled={file === null}>Upload Resume</Button>
+                        <div style={{width: "100%", textAlign:'center'}}>
+                            <Button style={btnStyleUpload} className="btn btn-primary mb-2" onClick={upload_file_to_backend} disabled={file === null}>Upload</Button>
+                            <Button style={btnStyleDelete} className="btn btn-primary mb-2" onClick={delete_file_from_backend}>Delete</Button>
+                        </div>
                         <br/>
                         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
                             <Viewer fileUrl={'http://127.0.0.1:8000' + student.resume}
