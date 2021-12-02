@@ -30,7 +30,7 @@ function App() {
   return (
     <>
       <Router>
-        <Navigation currUser={currUser} />
+        <Navigation currUser={currUser} setCurrUser={setCurrUser} />
         <Switch>
           <Route path="/" exact component={() => <Login currUser={currUser} setCurrUser={setCurrUser} />} />
           <Route path="/find-students" exact component={() => <StudentList currUser={currUser} />} />

@@ -35,7 +35,7 @@ function App() {
   return (
     <>
       <Router>
-        <Navigation currUser={currUser} />
+        <Navigation currUser={currUser} setCurrUser={setCurrUser} />
         <Switch>
           <Route path="/" exact component={() => <Login currUser={currUser} setCurrUser={setCurrUser} />} />
           <Route path="/create-recruiter" exact component={() => <CreateRecruiter currUser={currUser} /> } />

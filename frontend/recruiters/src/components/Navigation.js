@@ -1,7 +1,12 @@
 import {Navbar, Nav, Container} from 'react-bootstrap';
 import './../main.css'
 
-export default function Navigation ({currUser}) {
+export default function Navigation ({currUser, setCurrUser}) {
+
+  const logoutAction = () => {
+    setCurrUser(null);
+    localStorage.setItem('currUser', null);
+  }
 
   // <---------------- STYLING ---------------->
   let navbarStyle = {
@@ -29,7 +34,7 @@ export default function Navigation ({currUser}) {
           {currUser === null ?
               <Nav.Link className="navLink" href="/" style={textStyle}>Login</Nav.Link>
               :
-              <Nav.Link className="navLink" href="/" style={textStyle}>Logout</Nav.Link>
+              <Nav.Link className="navLink" href="/" style={textStyle} onClick={logoutAction}>Logout</Nav.Link>
             }
         </Nav>
       </Navbar.Collapse>

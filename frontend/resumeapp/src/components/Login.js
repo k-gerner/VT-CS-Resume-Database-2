@@ -1,9 +1,13 @@
 import React, {useRef, useState} from 'react';
 import {Button, Form, FormLabel, Alert} from 'react-bootstrap';
+import { useHistory } from "react-router-dom";
 
 export default function Login({currUser, setCurrUser}) {
+    let history = useHistory();
+
     const [message, setMessage] = useState("");
     const [isValid, setIsValid] = useState(false);
+    // const [redirect, setRedirect] = useState(false);
 
     const emailRef = useRef();
     const passRef = useRef();
@@ -31,9 +35,17 @@ export default function Login({currUser, setCurrUser}) {
             }
             setCurrUser(newUser);
             localStorage.setItem('currUser', JSON.stringify(newUser))
+            // return <Redirect to="/profile"/> 
+            if (newUser.type === "Student") {
+                history.push('/profile')
+            }
+            else {
+                history.push('/view-all-students')
+            }
 
             setMessage("");
             setIsValid(true);
+            // setRedirect(true);
         }
         else if (res.status === 401) {
             setMessage("Username " + email + " does not exist")
@@ -73,6 +85,7 @@ export default function Login({currUser, setCurrUser}) {
 
     return (
             <>
+                {/* { redirect ? <Redirect to="/profile"/> : null } */}
                 {currUser === null ?
                     <>
                         <h1 style={h1Style}>Login</h1>

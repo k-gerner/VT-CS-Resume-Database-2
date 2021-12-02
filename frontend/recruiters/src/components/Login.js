@@ -1,7 +1,10 @@
 import React, {useRef, useState} from 'react';
 import {Button, Form, FormLabel, Alert} from 'react-bootstrap';
+import { useHistory } from "react-router-dom";
 
 export default function Login({currUser, setCurrUser}) {
+    let history = useHistory();
+
     const [message, setMessage] = useState("");
     const [isValid, setIsValid] = useState(false);
 
@@ -31,6 +34,8 @@ export default function Login({currUser, setCurrUser}) {
             }
             setCurrUser(newUser);
             localStorage.setItem('currUser', JSON.stringify(newUser))
+
+            history.push('/find-students')
 
             setMessage("");
             setIsValid(true);
