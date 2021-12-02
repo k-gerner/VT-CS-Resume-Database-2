@@ -45,7 +45,6 @@ export default function Login({currUser, setCurrUser}) {
 
             setMessage("");
             setIsValid(true);
-            // setRedirect(true);
         }
         else if (res.status === 401) {
             setMessage("Username " + email + " does not exist")
@@ -85,7 +84,6 @@ export default function Login({currUser, setCurrUser}) {
 
     return (
             <>
-                {/* { redirect ? <Redirect to="/profile"/> : null } */}
                 {currUser === null ?
                     <>
                         <h1 style={h1Style}>Login</h1>
@@ -112,6 +110,7 @@ export default function Login({currUser, setCurrUser}) {
                     </>
                     :
                     <>
+                        {currUser.type === "Student" ? history.push('/profile') : history.push('/view-all-students')}
                         <h1 style={h1Style}>Logged in as {currUser.username}</h1>
                         <Button onClick={logoutAction} variant="danger" style={logoutStyle} className="btn btn-primary">Logout?</Button>
                     </>

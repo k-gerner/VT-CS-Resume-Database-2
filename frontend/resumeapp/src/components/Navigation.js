@@ -35,7 +35,7 @@ export default function Navigation ({currUser, setCurrUser}) {
             currUser.type === "Student" ? 
               <>
               <Nav className="ml-auto">
-              <Nav.Link className="navLink" href="/profile" style={textStyle}>Profile</Nav.Link>
+              {/* <Nav.Link className="navLink" href="/profile" style={textStyle}>Profile</Nav.Link> */}
               </Nav>
               {/* <Nav.Link className="navLink" href="/" style={textStyle} onClick={logoutAction}>Logout</Nav.Link> */}
               </>

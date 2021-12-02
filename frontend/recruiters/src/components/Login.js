@@ -106,6 +106,7 @@ export default function Login({currUser, setCurrUser}) {
                     </>
                     :
                     <>
+                        {history.push('/find-students')}
                         <h1 style={h1Style}>Logged in as {currUser.username}</h1>
                         <Button onClick={logoutAction} variant="danger" style={logoutStyle} className="btn btn-primary">Logout?</Button>
                     </>

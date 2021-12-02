@@ -11,7 +11,6 @@ import RecruiterList from './components/RecruiterList';
 import AllSkillTags from './components/AllSkillTags';
 
 function App() {
-
   const [currUser, setCurrUser] = useState(null);
 
   useEffect(() => {
