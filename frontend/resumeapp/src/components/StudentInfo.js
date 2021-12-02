@@ -205,8 +205,10 @@ export default function StudentInfo({currUser}) {
                             className="d-flex justify-content-between align-items-start"
                         >
                             <div className="ms-2 me-auto">
-                            <div className="fw-bold">Seeking</div>
+                            <div className="fw-bold" style={{width: '200px'}}>Seeking</div>
                                 <Select 
+                                    menuPortalTarget={document.body} 
+                                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                                     defaultValue={{value: capitalizeJobDescription(student.job_description), label: capitalizeJobDescription(student.job_description)}}
                                     onChange={jobDescriptionSelect}
                                     options={jobDescriptionOptions}
@@ -219,8 +221,10 @@ export default function StudentInfo({currUser}) {
                             className="d-flex justify-content-between align-items-start"
                         >
                             <div className="ms-2 me-auto">
-                            <div className="fw-bold">Class</div>
+                            <div className="fw-bold" style={{width: '150px'}}>Class</div>
                                 <Select 
+                                    menuPortalTarget={document.body} 
+                                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                                     defaultValue={{value: capitalize(student.class_standing), label: capitalize(student.class_standing)}}
                                     onChange={classSelect}
                                     options={classOptions}
