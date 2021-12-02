@@ -289,7 +289,7 @@ export default function StudentList ({currUser}) {
                     <ToggleButton
                         disabled={selectedSkills === null}
                         type="checkbox"
-                        checked={showExactMatches}
+                        checked={selectedSkills === null ? false : showExactMatches}
                         value="1"
                         onChange={e => toggleExactMatches(e.currentTarget.checked)}
                         style={btnStyle}
