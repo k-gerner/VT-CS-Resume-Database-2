@@ -112,7 +112,7 @@ def findAllStudents(request):
 
         elif request.data["Type"] == "Recruiter":
             try:
-                students = models.Student.objects.filter(~Q(resume='')).order_by('first_name')
+                students = models.Student.objects.filter(~Q(resume=''), ~Q(job_description="NOT LOOKING FOR WORK")).order_by('first_name')
             except models.Student.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -534,7 +534,7 @@ def search(request):
             for i in range(len(job_descriptions)):
                 job_descriptions[i] = job_descriptions[i].upper()
 
-            starting_queryset = models.Student.objects.filter(Q(job_description__in=job_descriptions), ~Q(resume=''))
+            starting_queryset = models.Student.objects.filter(Q(job_description__in=job_descriptions), ~Q(resume=''), ~Q(job_description="NOT LOOKING FOR WORK"))
 
             if searching_skills and searching_classes:
                 classes = [elem.upper().replace("'", "") for elem in classes]

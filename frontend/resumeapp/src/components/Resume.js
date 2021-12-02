@@ -22,9 +22,7 @@ export default function Resume({currUser}) {
 	const [success, setSuccess] = useState(false);
     const [alertText, setAlertText] = useState("orginial")
 
-    const handleClose = () => {
-        setShow(false);
-    }
+    const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleChange = file => {

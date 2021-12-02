@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import StudentSkillTag from './StudentSkillTag';
-import {Button, ListGroup, Alert} from 'react-bootstrap';
+import {Button, ListGroup, Alert, Modal} from 'react-bootstrap';
 import '../main.css'
 
 export default function StudentInfo({currUser}) {
@@ -9,6 +9,11 @@ export default function StudentInfo({currUser}) {
     const [studentSkillTags, setStudentSkillTags] = useState(null);
     const [selectedSkills, setSelectedSkills] = useState(null);
     const [skillOptions, setSkillOptions] = useState(null);
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const classOptions = [
         {value: 'Freshman', label: 'Freshman'},
@@ -100,6 +105,11 @@ export default function StudentInfo({currUser}) {
         const changePackage = {
             "pid": student.pid,
             "job_description": description.value,
+        }
+
+        if (description.value === "Not looking for work") {
+            // console.log(description.value);
+            handleShow();
         }
 
         await fetch('http://localhost:8000/api/update-student-job-description/', { 
@@ -269,6 +279,17 @@ export default function StudentInfo({currUser}) {
                     <br/>
                     <Button style={btnStyle} className="btn btn-primary mb-2" onClick={addTags} disabled={selectedSkills===null}>Add Skills</Button> 
                     <Button style={btnStyle} className="btn btn-primary mb-2" onClick={clearFilters} disabled={selectedSkills===null}>Clear</Button>
+
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Body>
+                            You selected "Not looking for work". Your profile is now hidden from recruiters.
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Done
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
                 :
                 <>
