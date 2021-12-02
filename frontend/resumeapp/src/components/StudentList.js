@@ -116,6 +116,15 @@ export default function StudentList ({currUser}) {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 
+    const capitalizeJobDescription = (str) => {
+        if(str.toUpperCase().includes(" OR ")){
+            return "Internship OR Full-time" // spooky hard-coding
+        }
+        else{
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+    }
+
     // <---------------- STYLING ---------------->
     let h1Style = {
         textAlign: 'center',
@@ -161,6 +170,7 @@ export default function StudentList ({currUser}) {
                                 <Card.Header style={{textAlign: 'center'}}>{stud.pid}</Card.Header>
                                 <Card.Body style={{textAlign: 'center'}}>
                                     <Card.Title><Link to={`/student/${stud.pid}`}>{stud.first_name + " " + stud.last_name}</Link></Card.Title>
+                                    <Card.Text>{capitalizeJobDescription(stud.job_description)}</Card.Text>
                                     <Card.Text>{capitalize(stud.class_standing)}</Card.Text>
                                     <Button variant="danger" onClick={() => openDeleteBox(stud.pid)}>Delete</Button>
                                 </Card.Body>

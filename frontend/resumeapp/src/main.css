@@ -110,11 +110,11 @@
 }
 
 .pageBtns a:hover {
-    color: white;
+    color: white !important;;
     background-color: #772953;
 }
 
 .pageActive a {
-    color: white;
+    color: white !important;;
     background-color: #772953;
 }

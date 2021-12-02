@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 export default function StudentCards ({currUser, students, percentMatches}) {
 
     const capitalize = (str) => {
-        if(str.toUpperCase() == "PHD"){
+        if(str.toUpperCase() === "PHD"){
             return "PhD";
         }
         else{

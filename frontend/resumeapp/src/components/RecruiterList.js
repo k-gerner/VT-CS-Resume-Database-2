@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Button, Card, Modal, Row, Col, Form } from 'react-bootstrap';
+import ReactPaginate from 'react-paginate';
+import './../main.css'
 
 export default function RecruiterList({currUser}) {
     const [recruiters, setRecruiters] = useState([]);
@@ -8,6 +10,18 @@ export default function RecruiterList({currUser}) {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [pageNumber, setPageNumber] = useState(0);
+    const recsPerPage = 9;
+    const pagesVisited = pageNumber * recsPerPage;
+
+    const displayRecs = 
+        recruiters.slice(pagesVisited, pagesVisited + recsPerPage);
+
+    const pageCount = Math.ceil(recruiters.length / recsPerPage);
+    const changePage = ({selected}) => {
+        setPageNumber(selected);
+    }
 
     useEffect(() => {
         let isUnmount = false;
@@ -112,8 +126,19 @@ export default function RecruiterList({currUser}) {
                         </div>
                     </Form>
                     <br/>
+                    <ReactPaginate 
+                        previousLabel={"Previous"}
+                        nextLabel={"Next"}
+                        pageCount={pageCount}
+                        onPageChange={changePage}
+                        containerClassName={"pageBtns"}
+                        previousLinkClassName={"prevBtn"}
+                        nextLinkClassName={"nextBtn"}
+                        disabledClassName={"pageDisabled"}
+                        activeClassName={"pageActive"}
+                    />
                     <Row>
-                        {recruiters.map((rec, idx) => (
+                        {displayRecs.map((rec, idx) => (
                             <Col xs={4}>
                                 <Card
                                     bg="light"
