@@ -19,6 +19,13 @@ export default function StudentInfo({currUser}) {
         {value: 'PhD', label: 'PhD'}
     ]
 
+    const jobDescriptionOptions = [
+        {value: 'Internship', label: 'Internship'},
+        {value: 'Full-time', label: 'Full-time'},
+        {value: 'Internship OR Full-time', label: 'Internship OR Full-time'},
+        {value: 'Not looking for work', label: 'Not looking for work'}
+    ]
+
     const [counter, setCounter] = useState(0);
 
     useEffect(() => {
@@ -77,13 +84,25 @@ export default function StudentInfo({currUser}) {
     }
 
     const classSelect = async (selectedClass) => {
-        // console.log(selectedClass);
         const changePackage = {
             "pid": student.pid,
             "class": selectedClass.value,
         }
 
         await fetch('http://localhost:8000/api/update-student-class/', { 
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(changePackage)
+        })
+    }
+
+    const jobDescriptionSelect = async (description) => {
+        const changePackage = {
+            "pid": student.pid,
+            "job_description": description.value,
+        }
+
+        await fetch('http://localhost:8000/api/update-student-job-description/', { 
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(changePackage)
@@ -129,6 +148,15 @@ export default function StudentInfo({currUser}) {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 
+    const capitalizeJobDescription = (str) => {
+        if(str.toUpperCase().includes(" OR ")){
+            return "Internship OR Full-time" // spooky hard-coding
+        }
+        else{
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+    }
+
     const skillTagConvert = (jsonData) => {
         var tempArr = []
         jsonData.skill_tags.map((tag) => (
@@ -170,6 +198,20 @@ export default function StudentInfo({currUser}) {
                             <div className="ms-2 me-auto">
                             <div className="fw-bold">Email</div>
                                 {student.email}
+                            </div>
+                        </ListGroup.Item>
+                        <ListGroup.Item
+                            as="li"
+                            className="d-flex justify-content-between align-items-start"
+                        >
+                            <div className="ms-2 me-auto">
+                            <div className="fw-bold">Seeking</div>
+                                <Select 
+                                    defaultValue={{value: capitalizeJobDescription(student.job_description), label: capitalizeJobDescription(student.job_description)}}
+                                    onChange={jobDescriptionSelect}
+                                    options={jobDescriptionOptions}
+                                    isSearchable={true}
+                                />
                             </div>
                         </ListGroup.Item>
                         <ListGroup.Item

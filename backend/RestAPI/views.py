@@ -531,6 +531,8 @@ def search(request):
             job_descriptions = request.data['job_descriptions']
             if len(job_descriptions) >= 1:
                 job_descriptions.append("INTERNSHIP OR FULL-TIME")
+            for i in range(len(job_descriptions)):
+                job_descriptions[i] = job_descriptions[i].upper()
 
             starting_queryset = models.Student.objects.filter(Q(job_description__in=job_descriptions), ~Q(resume=''))
 
@@ -728,8 +730,28 @@ def updateStudentClass(request):
         except models.Student.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
-        # print('{} {}'.format(pid, new_class))
         student.class_standing = new_class
+        student.save()
+        return Response(status=status.HTTP_200_OK)
+
+    else:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+"""
+Updates a given student's job description.
+"""
+@api_view(['POST'])
+def updateStudentJobDescription(request):
+    if request.method == 'POST':
+        pid = request.data["pid"]
+        new_description = request.data["job_description"].upper()
+        try:
+            student = models.Student.objects.get(pid=pid)
+        except models.Student.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        student.job_description = new_description
         student.save()
         return Response(status=status.HTTP_200_OK)
 

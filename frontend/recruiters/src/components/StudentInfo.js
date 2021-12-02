@@ -16,7 +16,7 @@ export default function StudentInfo({currStudent}) {
     }
 
     const capitalizeJobDescription = (str) => {
-        if(str.includes(" ")){
+        if(str.toUpperCase().includes(" OR ")){
             return "Internship OR Full-time" // spooky hard-coding
         }
         else{

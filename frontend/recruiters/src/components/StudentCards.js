@@ -4,11 +4,16 @@ import {Link} from 'react-router-dom';
 export default function StudentCards ({currUser, students, percentMatches}) {
 
     const capitalize = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        if(str.toUpperCase() == "PHD"){
+            return "PhD";
+        }
+        else{
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
     }
 
     const capitalizeJobDescription = (str) => {
-        if(str.includes(" ")){
+        if(str.toUpperCase().includes(" OR ")){
             return "Internship OR Full-time" // spooky hard-coding
         }
         else{
