@@ -40,7 +40,7 @@ export default function Login({currUser, setCurrUser}) {
                 history.push('/profile')
             }
             else {
-                history.push('/view-all-students')
+                history.push('/create-recruiter')
             }
 
             setMessage("");
