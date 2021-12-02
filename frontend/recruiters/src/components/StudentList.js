@@ -287,6 +287,7 @@ export default function StudentList ({currUser}) {
                     <br/>
 
                     <ToggleButton
+                        disabled={selectedSkills === null}
                         type="checkbox"
                         checked={showExactMatches}
                         value="1"
