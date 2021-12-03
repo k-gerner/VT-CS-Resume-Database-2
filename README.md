@@ -1,5 +1,5 @@
 # VT-CS-Resume-Database
-This repo contains our Senior Capstone project for Software Engineering. The goal of this projet is to build an application to connect recruiters with students by allowing students to upload their resumes and list their skills, class, and what type of work they are looking for. Recruiters can search by any of these fields.
+This repo contains our Software Engineering Senior Capstone project. The goal of this project is to build an application to connect recruiters with students by allowing students to upload their resumes and list their skills, class, and what type of work they are looking for. Recruiters can search by any of these fields.
 
 ### Contributors:
 [Sricharan Bachu](https://github.com/charanb2000)  
