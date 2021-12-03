@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { Button, Card, Modal, Row, Col, Form } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import './../main.css'
@@ -10,6 +10,8 @@ export default function RecruiterList({currUser}) {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const searchQ = useRef();
 
     const [pageNumber, setPageNumber] = useState(0);
     const recsPerPage = 9;
@@ -71,15 +73,32 @@ export default function RecruiterList({currUser}) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(toRemovePackage)
         })
+        if (searchQ.current.value === "") {
+            const res = await fetch('http://localhost:8000/api/get-all-recruiters/', { 
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({"Type": currUser.type})
+            })
 
-        const res = await fetch('http://localhost:8000/api/get-all-recruiters/', { 
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({"Type": currUser.type})
-        })
+            const jsonData = await res.json();
+            setRecruiters(jsonData);
+        }
 
-        const jsonData = await res.json();
-        setRecruiters(jsonData);
+        else {
+            const companySearch = {
+                "type": currUser.type,
+                "companyName": searchQ.current.value
+            }
+    
+            const res = await fetch('http://localhost:8000/api/company-search/', { 
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(companySearch)
+            })
+    
+            const jsonData = await res.json();
+            setRecruiters(jsonData);
+        }
 
 
         handleClose();
@@ -122,7 +141,7 @@ export default function RecruiterList({currUser}) {
                 <div style={allPaddingStyle}>
                     <Form>
                         <div className="form-group" style={{paddingTop: "1%"}}>
-                            <input type="text" className="form-control" placeholder="Search by company" onChange={searchChange}/>
+                            <input type="text" className="form-control" placeholder="Search by company" ref={searchQ} onChange={searchChange}/>
                         </div>
                     </Form>
                     <br/>

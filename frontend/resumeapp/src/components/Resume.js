@@ -21,7 +21,6 @@ export default function Resume({currUser}) {
     const [suggestedTags, setSuggestedTags] = useState([]);
 	const [success, setSuccess] = useState(false);
     const [alertText, setAlertText] = useState("orginial")
-    const [resumeDeleted, setResumeDeleted] = useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -82,7 +81,6 @@ export default function Resume({currUser}) {
 		.then((res) => {
 			if(res.status === 200) {
 				setSuccess(true)
-                setResumeDeleted(false)
 			}
 			return res.json();
 		})
@@ -104,7 +102,6 @@ export default function Resume({currUser}) {
 		}).then((res) => {
 			if(res.status === 200) {
                 window.location.reload(false);
-				setResumeDeleted(true)
 			}
 		})
         

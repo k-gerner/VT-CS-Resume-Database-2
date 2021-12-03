@@ -133,7 +133,7 @@ def getAllRecruiters(request):
     if request.method == 'POST':
         if request.data["Type"] == "Administrator":
             try:
-                recruiters = models.Recruiter.objects.all()
+                recruiters = models.Recruiter.objects.all().order_by('company_name')
             except models.Recruiter.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 

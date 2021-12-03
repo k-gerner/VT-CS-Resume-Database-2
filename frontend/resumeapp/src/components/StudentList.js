@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { Modal, Button, Form, Card, Row, Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
@@ -11,6 +11,8 @@ export default function StudentList ({currUser}) {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const searchQ = useRef();
 
     // For pagination
     const [pageNumber, setPageNumber] = useState(0);
@@ -73,20 +75,39 @@ export default function StudentList ({currUser}) {
             body: JSON.stringify(toRemovePackage)
         })
 
-        const res = await fetch('http://localhost:8000/api/all-students/', { 
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({"Type": currUser.type})
-        })
+        if (searchQ.current.value === "") {
+            const res = await fetch('http://localhost:8000/api/all-students/', { 
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({"Type": currUser.type})
+            })
 
-        const jsonData = await res.json();
-        setStudents(jsonData);
+            const jsonData = await res.json();
+            setStudents(jsonData);
+        }
+
+        else {
+            const pidSearch = {
+                "type": currUser.type,
+                "searchPID": searchQ.current.value
+            }
+    
+            const res = await fetch('http://localhost:8000/api/pid-search/', { 
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(pidSearch)
+            })
+    
+            const jsonData = await res.json();
+            setStudents(jsonData);
+        }
 
         handleClose();
     }
 
 
     const searchChange = async (e) => {
+        // console.log(searchQ.current.value);
         const pidSearch = {
             "type": currUser.type,
             "searchPID": e.target.value
@@ -143,7 +164,7 @@ export default function StudentList ({currUser}) {
                 <div style={paddingStyle}>
                     <Form>
                         <div className="form-group" style={{paddingTop: "1%"}}>
-                            <input type="text" className="form-control" placeholder="Search by PID or Class" onChange={searchChange}/>
+                            <input type="text" className="form-control" placeholder="Search by PID or Class" ref={searchQ} onChange={searchChange}/>
                         </div>
                     </Form>
                     <br/>
