@@ -20,10 +20,14 @@ export default function Resume({currUser}) {
     const [show, setShow] = useState(false);
     const [suggestedTags, setSuggestedTags] = useState([]);
 	const [success, setSuccess] = useState(false);
-    const [alertText, setAlertText] = useState("orginial")
+    const [alertText, setAlertText] = useState("orginial");
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const showConfirmDelete = () => setConfirmDelete(true);
+    const hideConfirmDelete = () => setConfirmDelete(false);
 
     const handleChange = file => {
 		setFile(file);
@@ -92,6 +96,7 @@ export default function Resume({currUser}) {
 	}
 
     const delete_file_from_backend = () => {
+        console.log("deleting...")
         var formData = new FormData();
 
 		formData.append('pid', currUser.username.split("@")[0]);
@@ -120,10 +125,8 @@ export default function Resume({currUser}) {
         backgroundColor: "#E95420",
         borderColor: "#E95420",
         float: "left",
-        // display: 'inline-block',
         width: 100,
         height:48,
-        // textAlign: 'center',
         alignItems: 'center',
         textDecoration: 'none'
     }
@@ -154,7 +157,30 @@ export default function Resume({currUser}) {
                         </div>
                         <div style={{width: "100%", textAlign:'center'}}>
                             <Button style={btnStyleUpload} className="btn btn-primary mb-2" onClick={upload_file_to_backend} disabled={file === null}>Upload</Button>
-                            <Button style={btnStyleDelete} className="btn btn-primary mb-2" onClick={delete_file_from_backend}>Delete</Button>
+                            <Button style={btnStyleDelete} className="btn btn-primary mb-2" onClick={showConfirmDelete}>Delete</Button>
+                            <Modal show={confirmDelete} onHide={hideConfirmDelete}>
+                                <Modal.Header closeButton>
+                                {/* <Modal.Title>Are You Sure?</Modal.Title> */}
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <Alert key="alert1" variant="danger">
+                                        <Alert.Heading>You are about to delete your resume</Alert.Heading>
+                                        <p>
+                                            Your profile won't be visible to recruiters until you upload a new resume.
+                                        </p>
+                                    </Alert>
+                                <br/>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                <Button variant="secondary" onClick={hideConfirmDelete}>
+                                    Cancel
+                                </Button>
+                                <Button variant="danger" onClick={delete_file_from_backend} href="/profile">
+                                    Delete
+                                </Button>
+                                </Modal.Footer>
+                            </Modal>
+
                         </div>
                         <br/>
                         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
@@ -171,7 +197,7 @@ export default function Resume({currUser}) {
                                 <strong className="me-auto">VT CS</strong>
                                 <small>{new Date().toLocaleString("en-US", { month: "long", day:"2-digit" })}</small>
                             </Toast.Header>
-                            <Toast.Body>You have not yet uploaded a resume. It will appear here once you do. Your profile will not be visible by recruiters until you upload a resume.
+                            <Toast.Body>You have not yet uploaded a resume. It will appear here once you do. Your profile will not be visible to recruiters until you upload a resume.
                             <div style={{width: "70%", height: "50%", float:"left", marginBottom: 10, marginTop: 10}}>
                             <FileUploader 
                                 handleChange={handleChange} 
