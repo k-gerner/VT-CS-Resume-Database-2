@@ -110,7 +110,7 @@ export default function Login({currUser, setCurrUser}) {
                     </>
                     :
                     <>
-                        {currUser.type === "Student" ? history.push('/profile') : history.push('/view-all-students')}
+                        {currUser.type === "Student" ? history.push('/profile') : history.push('/create-recruiter')}
                         <h1 style={h1Style}>Logged in as {currUser.username}</h1>
                         <Button onClick={logoutAction} variant="danger" style={logoutStyle} className="btn btn-primary">Logout?</Button>
                     </>
