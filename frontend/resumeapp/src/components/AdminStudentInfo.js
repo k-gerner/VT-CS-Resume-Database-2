@@ -1,4 +1,4 @@
-import {ListGroup} from 'react-bootstrap';
+import {Alert, ListGroup} from 'react-bootstrap';
 import '../main.css'
 
 export default function AdminStudentInfo({currStudent}) {
@@ -72,7 +72,18 @@ export default function AdminStudentInfo({currStudent}) {
                         >
                             <div className="ms-2 me-auto">
                             <div className="fw-bold">Skills</div>
-                                {skillTagConvert(currStudent.skill_tags).join(", ")}
+                                {
+                                    currStudent.skill_tags !== null ?
+                                        currStudent.skill_tags.length === 0 ?
+                                            <Alert key='no_tags_alert' variant='secondary'>
+                                                This student has not selected any skills yet.
+                                            </Alert>
+                                            :
+                                            skillTagConvert(currStudent.skill_tags).join(", ")
+                                        :
+                                        <>
+                                        </>
+                                }
                             </div>
                         </ListGroup.Item>
                     </ListGroup>
