@@ -19,7 +19,7 @@ export default function StudentResume({currStudent}) {
                             defaultScale={SpecialZoomLevel.ActualSize} />
                     </Worker>
                     :
-                    <div className="d-flex justify-content-center flex-row" style={{marginTop:'40%'}}>
+                    <div className="d-flex justify-content-center flex-row" style={{marginTop:'15%'}}>
                         <Toast>
                             <Toast.Header closeButton={false}>
                                 {/* <img src={require('./vt_logo.png')} className="rounded me-2" alt="VT logo" /> */}
