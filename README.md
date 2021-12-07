@@ -9,12 +9,14 @@ This repo contains our Software Engineering Senior Capstone project. The goal of
 [Brian Stephan](https://github.com/briantstephan)  
 
 ## How to run:
-In the `/backend` directory, run the command `python3 manage.py runserver`. This will spin up the backend. 
+In the `/backend` directory, pip install the following python libraries:
 * Django
 * django-filter
 * djangorestframework
 * django-cors-headers
 * pdfplumber
+
+Then, run the command `python3 manage.py runserver`. This will spin up the backend.
 
 To spin up the frontend for recruiters, navigate to the `/frontend/recruiters` directory. If this is your first time running the code, first run `npm i` to install the necessary packages. To spin up the recruiter frontend, type `npm start`.  
 To spin up the frontend for students and admins, perform the same steps as listed above, except in the `/frontend/resumeapp` directory. 
